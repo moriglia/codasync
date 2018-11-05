@@ -1,0 +1,24 @@
+Channel 1
+1	0	AnalogWaveformSample<Double>: Index=0, Value=0.357975340743092
+2	1	AnalogWaveformSample<Double>: Index=1, Value=0.358297540465601
+3	2	AnalogWaveformSample<Double>: Index=2, Value=0.357653141020965
+Channel 5
+5	0	AnalogWaveformSample<Double>: Index=0, Value=0.582548642485585
+6	1	AnalogWaveformSample<Double>: Index=1, Value=0.582548642485585
+7	2	AnalogWaveformSample<Double>: Index=2, Value=0.581904242487335
+Channel 9
+9	0	AnalogWaveformSample<Double>: Index=0, Value=-0.00514351531097626
+10	1	AnalogWaveformSample<Double>: Index=1, Value=-0.00514351531097626
+11	2	AnalogWaveformSample<Double>: Index=2, Value=-0.00482131598849108
+Channel 13
+13	0	AnalogWaveformSample<Double>: Index=0, Value=0.202675118011073
+14	1	AnalogWaveformSample<Double>: Index=1, Value=0.202675118011073
+15	2	AnalogWaveformSample<Double>: Index=2, Value=0.202675118011073
+Channel 17
+17	0	AnalogWaveformSample<Double>: Index=0, Value=-0.23326055596622
+18	1	AnalogWaveformSample<Double>: Index=1, Value=-0.23326055596622
+19	2	AnalogWaveformSample<Double>: Index=2, Value=-0.232616157762567
+Channel 21
+21	0	AnalogWaveformSample<Double>: Index=0, Value=0.222651490427238
+22	1	AnalogWaveformSample<Double>: Index=1, Value=0.222329290861138
+23	2	AnalogWaveformSample<Double>: Index=2, Value=0.222007091295399
