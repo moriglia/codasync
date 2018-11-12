@@ -88,13 +88,13 @@ namespace CoDASync
                     SampleQuantityMode.ContinuousSamples
                 );
 
-                acquisitionTask.Timing.ConfigureSampleClock(
+                /*acquisitionTask.Timing.ConfigureSampleClock(
                     "", //internal clock
                     1000,
                     SampleClockActiveEdge.Rising, 
                     SampleQuantityMode.ContinuousSamples,
                     1000
-                );
+                );*/
 
                 acquisitionTask.Control(TaskAction.Verify);
 

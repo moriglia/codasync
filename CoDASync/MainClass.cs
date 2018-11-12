@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +10,15 @@ namespace CoDASync
     class MainClass
     {
         public static void Main(string[] args){
-            //CorvusManagerTest();
+            //CorvusManager.CorvusManagerTest();
             //DAQManager.TestSingleAcquisition(); // OK funziona
 
-            DAQManager DM = new DAQManager();
-            DM.TestContinuousAcquisition();
-        }
+            //DAQManager DM = new DAQManager();
+            //DM.TestContinuousAcquisition();
 
-        static void CorvusManagerTest()
-        {
-            CorvusManager cm = new CorvusManager("COM6", 57600);
-            cm.rmove(-6, -5, -2);
-            Thread.Sleep(5000);
-            cm.rmove(6, 5, 2);
+            //Application.EnableVisualStyles();
+            //Application.DoEvents();
+            //Application.Run(new MainForm());
         }
     }
-}
+}*/
