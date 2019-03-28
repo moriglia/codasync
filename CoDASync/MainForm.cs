@@ -19,12 +19,12 @@ namespace CoDASync
             CM = new CorvusManager("COM6", 57600);
         }
 
-        public static void Main()
+        /*public static void Main()
         {
             Application.EnableVisualStyles();
             Application.DoEvents();
             Application.Run(new MainForm());
-        }
+        }*/
 
         public void sendVenusCommand(String venusCommand)
         {

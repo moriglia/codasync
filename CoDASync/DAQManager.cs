@@ -11,8 +11,138 @@ namespace CoDASync
     {
         private Task acquisitionTask;
         private AnalogMultiChannelReader analogMultiChannelReader;
+		private double rate;
         private NationalInstruments.AnalogWaveform<double>[] data;
+		private AsyncCallback onContinuousDataAcquiredCallback = null;
+		
+		
+		// used to signal that acquisition is completed and data is available to consume
+		private EventWaitHandle acquisitionReady;
 
+		
+		// constructor
+		public DAQManager (String _device, int [] _channels, ref EventWaitHandle _acquisitionReady)
+		{
+			acquisitionTask = new Task();
+			
+			// initialize channels
+			for (int i = 0; i < _channels.Length; ++i)
+			{
+				try
+				{
+					acquisitionTask.AIChannels.CreateVoltageChannel(
+                        _device + "/ai" + _channels[i].ToString(),
+                        "Channel_" + _channels[i].ToString(),
+                        (AITerminalConfiguration)(-1),
+                        -10,
+                        10,
+                        AIVoltageUnits.Volts
+                    );
+				} catch(DaqException de)
+				{
+					throw "Impossible to create channel " + _device + "/ai" + _channels[i].ToString() + "\n" + de;
+				}
+			}
+			
+			// initialize Channel Reader
+			analogMultiChannelReader = new AnalogMultiChannelReader(acquisitionTask.Stream);
+			
+			// set rate to conventional value 0; If not set later (ConfigureContinuousAcquisitionClockRate) 
+			// a default value will be used for continuous acquisition
+			rate = 0;
+			
+			// copied from examples
+			acquisitionTask.Control(TaskAction.Verify);
+			
+			// acquire reference to "condition variable"
+			ref acquisitionReady = ref _acquisitionReady;
+			
+			// set callback for continuous acquisition handling
+			onContinuousDataAcquiredCallback = new AsyncCallback(OnContinuousDataAcquired);
+			analogMultiChannelReader.SynchronizeCallbacks = true;
+		}
+		
+		// start single sample acquisition
+		public void StartAcquisition(ref double[] _data)
+		{	
+			// read a sample
+			_data = analogMultiChannelReader.ReadSingleSample();
+			
+			// signal that data is ready
+			acquisitionReady.Set();
+		}
+		
+		public void ConfigureContinuousAcquisitionClockRate(double _rate)
+		{
+			if (_rate!=0)
+			{
+				rate = _rate;
+			} else {
+				rate = 1000; //set to default
+			}
+			
+			acquisitionTask.Timing.ConfigureSampleClock(
+				"", // internal timer
+				rate, // set rate or default,
+				SampleClockActiveEdge.Rising, 
+                SampleQuantityMode.ContinuousSamples
+			);
+		}
+		
+		// handler for end of acquisition
+		protected void OnContinuousDataAcquired(IAsyncResult iar)
+		{
+			// put acquired data in the buffer provided by the caller of StartAcquisition (function below)
+			data = analogMultiChannelReader.EndReadWaveform(iar);
+			
+			// signal that data is ready
+			acquisitionReady.Set();
+		}
+		
+		// start continuous acquisition
+		public void StartAcquisition(ref NationalInstruments.AnalogWaveform<double>[] _data, int sampleNumber)
+		{
+			ref data = ref _data;
+			
+			if (!rate)
+			{	// if no acquisition rate has been set, set it to default
+				ConfigureContinuousAcquisitionClockRate(0);
+			}
+			
+			analogMultiChannelReader.BeginReadWaveform(
+				sampleNumber, // number of samples per channel that will be acquired
+				onContinuousDataAcquiredCallback, // callback at the end of the acquisition
+				acquisitionTask
+			);
+		}
+		
+		public static void TestDAQManager()
+		{
+			EventWaitHandle dataReady = new AutoResetEvent(false);
+			DAQManager DM = new DAQManager(
+				"Dev2",
+				[0,1,2,3,4,5], // device channels
+				dataReady // condition variable to use for synchronization with data acquirer
+			);
+			DM.ConfigureContinuousAcquisitionClockRate(1000);
+			NationalInstruments.AnalogWaveform<double>[] test_data;
+			StartAcquisition(test_data, 15);
+			
+			// wait for data acquisition completion
+			dataReady.WaitOne();
+			
+			// print data
+			int j = 0;
+			foreach (NationalInstruments.AnalogWaveform<double> aw in test_data)
+			{
+				double [] channel_data = aw.GetRawData(0, aw.SampleCount);
+				for(int i = 0; i < aw.SampleCount; ++i)
+				{
+					Console.WriteLine("Channel " + j.ToString() + "\tSample " + i.ToString() + "\tValue " + channel_data[i].ToString());
+				}
+				++j;
+			}
+		}
 
         public static void TestSingleAcquisition()
         {
