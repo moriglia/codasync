@@ -6,23 +6,35 @@ using System.Threading;
 //using System.Threading.Tasks;
 using NationalInstruments.DAQmx;
 
+using System.IO;
+
 namespace CoDASync
 {
+	// marked as unsafe to use pointers
     class DAQManager
     {
-        private Task acquisitionTask; //N. I. Task. It uses analogMultiChallenReader to get data from control board of the load cell.
+        private Task acquisitionTask; //N. I. Task. It uses analogMultiChannelReader to get data from control board of the load cell.
         private AnalogMultiChannelReader analogMultiChannelReader;
 		private double rate;
-        private NationalInstruments.AnalogWaveform<double>[] data;
+        public NationalInstruments.AnalogWaveform<double>[] data
+		{
+			get ;
+			private set ;
+		}
+		private int sampleNumber;
 		private AsyncCallback onContinuousDataAcquiredCallback = null;
 		
 		
 		// used to signal that acquisition is completed and data is available to consume
-		private EventWaitHandle acquisitionReady;
+		private EventWaitHandle dataAvailable;
+		private EventWaitHandle dataConsumed;
+		
+		// acquisition lock: this is used to guarantee that every acquisition is started in mutual exclusion with other acquisitions.
+		private object acquisitionLock;
 
 		
 		// constructor
-		public DAQManager (String _device, int [] _channels, ref EventWaitHandle _acquisitionReady)
+		public DAQManager (String _device, int [] _channels)
 		{
 			acquisitionTask = new Task();
 			
@@ -55,22 +67,43 @@ namespace CoDASync
 			// copied from examples
 			acquisitionTask.Control(TaskAction.Verify);
 			
-			// acquire reference to "condition variable"
-			acquisitionReady = _acquisitionReady;
+			// create condition variable for data available
+			dataAvailable = new AutoResetEvent(false);
+			// create condition variable for data consumed
+			dataConsumed = new AutoResetEvent(true);
 			
 			// set callback for continuous acquisition handling
 			onContinuousDataAcquiredCallback = new AsyncCallback(OnContinuousDataAcquired);
 			analogMultiChannelReader.SynchronizeCallbacks = true;
+			
+			// create acquisition lock object
+			acquisitionLock = new object();
+			
+			// no data at start
+			data = null;
 		}
 		
-		// start single sample acquisition
-		public void StartAcquisition(ref double[] _data)
+		// acquire one sample
+		public double[] Acquire()
 		{	
+			/*
+				return value: array with one value per channel
+			*/
 			// read a sample
-			_data = analogMultiChannelReader.ReadSingleSample();
+			lock(acquisitionLock) return analogMultiChannelReader.ReadSingleSample();
 			
-			// signal that data is ready
-			acquisitionReady.Set();
+		}
+		
+		
+		public double[,] Acquire(int samplesPerChannel)
+		{
+			/*
+				samplesPerChannel: how many samples to get from the buffer.
+					If set to -1, all available values of the buffer will be read
+				return value: a 2D array. The first dimension represents the channel, 
+					the second represents the <samplesPerChannel> values of the selected channel
+			*/
+			lock(acquisitionLock) return analogMultiChannelReader.ReadMultiSample(samplesPerChannel);
 		}
 		
 		public void ConfigureContinuousAcquisitionClockRate(double _rate)
@@ -93,57 +126,78 @@ namespace CoDASync
 		// handler for end of acquisition
 		protected void OnContinuousDataAcquired(IAsyncResult iar)
 		{
-			// put acquired data in the buffer provided by the caller of StartAcquisition (function below)
-			data = analogMultiChannelReader.EndReadWaveform(iar);
 			
-			// signal that data is ready
-			acquisitionReady.Set();
+			// create new AnalogWaveform object where to store the read data
+			lock(acquisitionLock) data = analogMultiChannelReader.EndReadWaveform(iar);
+			
+			// signal that data is ready and ConsumeData can be called
+			dataAvailable.Set();
 		}
 		
 		// start continuous acquisition
-		public void StartAcquisition(ref NationalInstruments.AnalogWaveform<double>[] _data, int sampleNumber)
+		public void StartAcquisition(int _sampleNumber)
 		{
-			data = _data;
+			// data pointer may be necessary yet
+			dataConsumed.WaitOne();
+			
+			sampleNumber = _sampleNumber;
 			
 			if (rate==0)
 			{	// if no acquisition rate has been set, set it to default
 				ConfigureContinuousAcquisitionClockRate(0);
 			}
 			
-			analogMultiChannelReader.BeginReadWaveform(
+			lock(acquisitionLock) analogMultiChannelReader.BeginReadWaveform(
 				sampleNumber, // number of samples per channel that will be acquired
 				onContinuousDataAcquiredCallback, // callback at the end of the acquisition
 				acquisitionTask
 			);
 		}
 		
+		// call this function after calling Start acquisition
+		// and before usign Data
+		public void WaitForData()
+		{
+			dataAvailable.WaitOne();
+		}
+		
+		// call this function after you used Data
+		public void SignalDataConsumed()
+		{
+			dataConsumed.Set();
+		}
+		
 		public static void TestDAQManager()
 		{
-			EventWaitHandle dataReady = new AutoResetEvent(false);
 			int[] voltage_channels = { 0, 1, 2, 3, 4, 5 };
 			DAQManager DM = new DAQManager(
 				"Dev2",
-				voltage_channels, // device channels
-				ref dataReady // condition variable to use for synchronization with data acquirer
+				voltage_channels // device channels
 			);
 			DM.ConfigureContinuousAcquisitionClockRate(1000);
-			NationalInstruments.AnalogWaveform<double>[] test_data = new NationalInstruments.AnalogWaveform<double>[1];
-			DM.StartAcquisition(ref test_data, 15);
-			
-			// wait for data acquisition completion
-			dataReady.WaitOne();
+			DM.StartAcquisition(15);
+			DM.WaitForData();
+			NationalInstruments.AnalogWaveform<double>[] test_data = DM.data;
 			
 			// print data
+			String outs = "";
 			int j = 0;
 			foreach (NationalInstruments.AnalogWaveform<double> aw in test_data)
 			{
 				double [] channel_data = aw.GetRawData(0, aw.SampleCount);
 				for(int i = 0; i < aw.SampleCount; ++i)
 				{
-					Console.WriteLine("Channel " + j.ToString() + "\tSample " + i.ToString() + "\tValue " + channel_data[i].ToString());
+					outs += "Channel " + j.ToString() + "\tSample " + i.ToString() + "\tValue " + channel_data[i].ToString() + Environment.NewLine;
 				}
 				++j;
 			}
+			
+			DM.SignalDataConsumed();
+			
+			File.WriteAllText(".\\Hello.txt", outs);
+			
+			Console.ReadLine();
+			Thread.Sleep(20000);
 		}
 
         public static void TestSingleAcquisition()
