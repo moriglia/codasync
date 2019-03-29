@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 //using System.Threading.Tasks;
 using NationalInstruments.DAQmx;
 
@@ -9,7 +10,7 @@ namespace CoDASync
 {
     class DAQManager
     {
-        private Task acquisitionTask;
+        private Task acquisitionTask; //N. I. Task. It uses analogMultiChallenReader to get data from control board of the load cell.
         private AnalogMultiChannelReader analogMultiChannelReader;
 		private double rate;
         private NationalInstruments.AnalogWaveform<double>[] data;
@@ -40,7 +41,7 @@ namespace CoDASync
                     );
 				} catch(DaqException de)
 				{
-					throw "Impossible to create channel " + _device + "/ai" + _channels[i].ToString() + "\n" + de;
+					throw de;
 				}
 			}
 			
@@ -55,7 +56,7 @@ namespace CoDASync
 			acquisitionTask.Control(TaskAction.Verify);
 			
 			// acquire reference to "condition variable"
-			ref acquisitionReady = ref _acquisitionReady;
+			acquisitionReady = _acquisitionReady;
 			
 			// set callback for continuous acquisition handling
 			onContinuousDataAcquiredCallback = new AsyncCallback(OnContinuousDataAcquired);
@@ -102,9 +103,9 @@ namespace CoDASync
 		// start continuous acquisition
 		public void StartAcquisition(ref NationalInstruments.AnalogWaveform<double>[] _data, int sampleNumber)
 		{
-			ref data = ref _data;
+			data = _data;
 			
-			if (!rate)
+			if (rate==0)
 			{	// if no acquisition rate has been set, set it to default
 				ConfigureContinuousAcquisitionClockRate(0);
 			}
@@ -119,14 +120,15 @@ namespace CoDASync
 		public static void TestDAQManager()
 		{
 			EventWaitHandle dataReady = new AutoResetEvent(false);
+			int[] voltage_channels = { 0, 1, 2, 3, 4, 5 };
 			DAQManager DM = new DAQManager(
 				"Dev2",
-				[0,1,2,3,4,5], // device channels
-				dataReady // condition variable to use for synchronization with data acquirer
+				voltage_channels, // device channels
+				ref dataReady // condition variable to use for synchronization with data acquirer
 			);
 			DM.ConfigureContinuousAcquisitionClockRate(1000);
-			NationalInstruments.AnalogWaveform<double>[] test_data;
-			StartAcquisition(test_data, 15);
+			NationalInstruments.AnalogWaveform<double>[] test_data = new NationalInstruments.AnalogWaveform<double>[1];
+			DM.StartAcquisition(ref test_data, 15);
 			
 			// wait for data acquisition completion
 			dataReady.WaitOne();
