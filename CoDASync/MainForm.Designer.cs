@@ -1,6 +1,6 @@
 ﻿namespace CoDASync
 {
-    partial class MainForm
+    partial class CoDASyncWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,24 @@
         private void InitializeComponent()
         {
             this.CorvusControlGroup = new System.Windows.Forms.GroupBox();
+            this.ExecListingButton = new System.Windows.Forms.Button();
+            this.ListingFilename = new System.Windows.Forms.TextBox();
+            this.CorvusConfigurationBox = new System.Windows.Forms.GroupBox();
+            this.ConnectPortButton = new System.Windows.Forms.Button();
+            this.BaudRateTextBox = new System.Windows.Forms.TextBox();
+            this.PortTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.OriginSettingsBox = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.MoveToOriginButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.SetOriginButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             this.RelativeMoveGroupBox = new System.Windows.Forms.GroupBox();
             this.moveAllAxes = new System.Windows.Forms.Button();
             this.moveNegativeZ = new System.Windows.Forms.Button();
@@ -38,221 +56,149 @@
             this.moveNegativeX = new System.Windows.Forms.Button();
             this.movePositiveX = new System.Windows.Forms.Button();
             this.CaptureArrowKeysCheckBox = new System.Windows.Forms.CheckBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.RMoveY = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.RMoveX = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.RMoveZ = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.SendCommandButton = new System.Windows.Forms.Button();
             this.VenusCommandBox = new System.Windows.Forms.TextBox();
-            this.SetOriginButton = new System.Windows.Forms.Button();
-            this.MoveToOriginButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.NIDAQmxControlBox = new System.Windows.Forms.GroupBox();
             this.CorvusControlGroup.SuspendLayout();
-            this.RelativeMoveGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.CorvusConfigurationBox.SuspendLayout();
+            this.OriginSettingsBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.RelativeMoveGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RMoveY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RMoveX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RMoveZ)).BeginInit();
             this.SuspendLayout();
             // 
             // CorvusControlGroup
             // 
-            this.CorvusControlGroup.Controls.Add(this.groupBox1);
+            this.CorvusControlGroup.Controls.Add(this.ExecListingButton);
+            this.CorvusControlGroup.Controls.Add(this.ListingFilename);
+            this.CorvusControlGroup.Controls.Add(this.CorvusConfigurationBox);
+            this.CorvusControlGroup.Controls.Add(this.OriginSettingsBox);
             this.CorvusControlGroup.Controls.Add(this.RelativeMoveGroupBox);
             this.CorvusControlGroup.Controls.Add(this.SendCommandButton);
             this.CorvusControlGroup.Controls.Add(this.VenusCommandBox);
             this.CorvusControlGroup.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.CorvusControlGroup.Location = new System.Drawing.Point(12, 12);
             this.CorvusControlGroup.Name = "CorvusControlGroup";
-            this.CorvusControlGroup.Size = new System.Drawing.Size(337, 439);
+            this.CorvusControlGroup.Size = new System.Drawing.Size(337, 655);
             this.CorvusControlGroup.TabIndex = 0;
             this.CorvusControlGroup.TabStop = false;
             this.CorvusControlGroup.Text = "Corvus Control";
             // 
-            // RelativeMoveGroupBox
+            // ExecListingButton
             // 
-            this.RelativeMoveGroupBox.Controls.Add(this.moveAllAxes);
-            this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeZ);
-            this.RelativeMoveGroupBox.Controls.Add(this.movePositiveZ);
-            this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeY);
-            this.RelativeMoveGroupBox.Controls.Add(this.movePositiveY);
-            this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeX);
-            this.RelativeMoveGroupBox.Controls.Add(this.movePositiveX);
-            this.RelativeMoveGroupBox.Controls.Add(this.CaptureArrowKeysCheckBox);
-            this.RelativeMoveGroupBox.Controls.Add(this.numericUpDown2);
-            this.RelativeMoveGroupBox.Controls.Add(this.label3);
-            this.RelativeMoveGroupBox.Controls.Add(this.numericUpDown1);
-            this.RelativeMoveGroupBox.Controls.Add(this.label2);
-            this.RelativeMoveGroupBox.Controls.Add(this.numericUpDown3);
-            this.RelativeMoveGroupBox.Controls.Add(this.label1);
-            this.RelativeMoveGroupBox.Location = new System.Drawing.Point(6, 48);
-            this.RelativeMoveGroupBox.Name = "RelativeMoveGroupBox";
-            this.RelativeMoveGroupBox.Size = new System.Drawing.Size(325, 218);
-            this.RelativeMoveGroupBox.TabIndex = 6;
-            this.RelativeMoveGroupBox.TabStop = false;
-            this.RelativeMoveGroupBox.Text = "Relative Move";
+            this.ExecListingButton.Location = new System.Drawing.Point(6, 123);
+            this.ExecListingButton.Name = "ExecListingButton";
+            this.ExecListingButton.Size = new System.Drawing.Size(98, 23);
+            this.ExecListingButton.TabIndex = 16;
+            this.ExecListingButton.Text = "Exec Listing";
+            this.ExecListingButton.UseVisualStyleBackColor = true;
             // 
-            // moveAllAxes
+            // ListingFilename
             // 
-            this.moveAllAxes.Location = new System.Drawing.Point(244, 128);
-            this.moveAllAxes.Name = "moveAllAxes";
-            this.moveAllAxes.Size = new System.Drawing.Size(75, 23);
-            this.moveAllAxes.TabIndex = 13;
-            this.moveAllAxes.Text = "All axes";
-            this.moveAllAxes.UseVisualStyleBackColor = true;
+            this.ListingFilename.Location = new System.Drawing.Point(110, 125);
+            this.ListingFilename.Name = "ListingFilename";
+            this.ListingFilename.Size = new System.Drawing.Size(221, 20);
+            this.ListingFilename.TabIndex = 17;
             // 
-            // moveNegativeZ
+            // CorvusConfigurationBox
             // 
-            this.moveNegativeZ.Location = new System.Drawing.Point(199, 186);
-            this.moveNegativeZ.Name = "moveNegativeZ";
-            this.moveNegativeZ.Size = new System.Drawing.Size(25, 23);
-            this.moveNegativeZ.TabIndex = 12;
-            this.moveNegativeZ.UseVisualStyleBackColor = true;
+            this.CorvusConfigurationBox.Controls.Add(this.ConnectPortButton);
+            this.CorvusConfigurationBox.Controls.Add(this.BaudRateTextBox);
+            this.CorvusConfigurationBox.Controls.Add(this.PortTextBox);
+            this.CorvusConfigurationBox.Controls.Add(this.label8);
+            this.CorvusConfigurationBox.Controls.Add(this.label7);
+            this.CorvusConfigurationBox.Location = new System.Drawing.Point(7, 20);
+            this.CorvusConfigurationBox.Name = "CorvusConfigurationBox";
+            this.CorvusConfigurationBox.Size = new System.Drawing.Size(324, 73);
+            this.CorvusConfigurationBox.TabIndex = 15;
+            this.CorvusConfigurationBox.TabStop = false;
+            this.CorvusConfigurationBox.Text = "Configure";
             // 
-            // movePositiveZ
+            // ConnectPortButton
             // 
-            this.movePositiveZ.Location = new System.Drawing.Point(199, 128);
-            this.movePositiveZ.Name = "movePositiveZ";
-            this.movePositiveZ.Size = new System.Drawing.Size(25, 23);
-            this.movePositiveZ.TabIndex = 11;
-            this.movePositiveZ.UseVisualStyleBackColor = true;
+            this.ConnectPortButton.Location = new System.Drawing.Point(228, 40);
+            this.ConnectPortButton.Name = "ConnectPortButton";
+            this.ConnectPortButton.Size = new System.Drawing.Size(75, 23);
+            this.ConnectPortButton.TabIndex = 4;
+            this.ConnectPortButton.Text = "Connect";
+            this.ConnectPortButton.UseVisualStyleBackColor = true;
+            this.ConnectPortButton.Click += new System.EventHandler(this.ConnectPortButton_Click);
             // 
-            // moveNegativeY
+            // BaudRateTextBox
             // 
-            this.moveNegativeY.Location = new System.Drawing.Point(87, 186);
-            this.moveNegativeY.Name = "moveNegativeY";
-            this.moveNegativeY.Size = new System.Drawing.Size(25, 23);
-            this.moveNegativeY.TabIndex = 10;
-            this.moveNegativeY.UseVisualStyleBackColor = true;
+            this.BaudRateTextBox.Location = new System.Drawing.Point(86, 42);
+            this.BaudRateTextBox.Name = "BaudRateTextBox";
+            this.BaudRateTextBox.Size = new System.Drawing.Size(100, 20);
+            this.BaudRateTextBox.TabIndex = 3;
             // 
-            // movePositiveY
+            // PortTextBox
             // 
-            this.movePositiveY.Location = new System.Drawing.Point(87, 128);
-            this.movePositiveY.Name = "movePositiveY";
-            this.movePositiveY.Size = new System.Drawing.Size(25, 23);
-            this.movePositiveY.TabIndex = 9;
-            this.movePositiveY.UseVisualStyleBackColor = true;
+            this.PortTextBox.Location = new System.Drawing.Point(86, 16);
+            this.PortTextBox.Name = "PortTextBox";
+            this.PortTextBox.Size = new System.Drawing.Size(100, 20);
+            this.PortTextBox.TabIndex = 2;
             // 
-            // moveNegativeX
+            // label8
             // 
-            this.moveNegativeX.Location = new System.Drawing.Point(62, 157);
-            this.moveNegativeX.Name = "moveNegativeX";
-            this.moveNegativeX.Size = new System.Drawing.Size(25, 23);
-            this.moveNegativeX.TabIndex = 8;
-            this.moveNegativeX.UseVisualStyleBackColor = true;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(20, 45);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(58, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Baud Rate";
             // 
-            // movePositiveX
+            // label7
             // 
-            this.movePositiveX.Location = new System.Drawing.Point(111, 157);
-            this.movePositiveX.Name = "movePositiveX";
-            this.movePositiveX.Size = new System.Drawing.Size(25, 23);
-            this.movePositiveX.TabIndex = 7;
-            this.movePositiveX.UseVisualStyleBackColor = true;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(22, 19);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(26, 13);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Port";
             // 
-            // CaptureArrowKeysCheckBox
+            // OriginSettingsBox
             // 
-            this.CaptureArrowKeysCheckBox.AutoSize = true;
-            this.CaptureArrowKeysCheckBox.Location = new System.Drawing.Point(120, 97);
-            this.CaptureArrowKeysCheckBox.Name = "CaptureArrowKeysCheckBox";
-            this.CaptureArrowKeysCheckBox.Size = new System.Drawing.Size(117, 17);
-            this.CaptureArrowKeysCheckBox.TabIndex = 6;
-            this.CaptureArrowKeysCheckBox.Text = "Capture arrow keys";
-            this.CaptureArrowKeysCheckBox.UseVisualStyleBackColor = true;
+            this.OriginSettingsBox.Controls.Add(this.button1);
+            this.OriginSettingsBox.Controls.Add(this.numericUpDown4);
+            this.OriginSettingsBox.Controls.Add(this.MoveToOriginButton);
+            this.OriginSettingsBox.Controls.Add(this.label4);
+            this.OriginSettingsBox.Controls.Add(this.numericUpDown5);
+            this.OriginSettingsBox.Controls.Add(this.SetOriginButton);
+            this.OriginSettingsBox.Controls.Add(this.label5);
+            this.OriginSettingsBox.Controls.Add(this.numericUpDown6);
+            this.OriginSettingsBox.Controls.Add(this.label6);
+            this.OriginSettingsBox.Location = new System.Drawing.Point(6, 376);
+            this.OriginSettingsBox.Name = "OriginSettingsBox";
+            this.OriginSettingsBox.Size = new System.Drawing.Size(325, 161);
+            this.OriginSettingsBox.TabIndex = 14;
+            this.OriginSettingsBox.TabStop = false;
+            this.OriginSettingsBox.Text = "Origin Settings";
             // 
-            // numericUpDown2
+            // button1
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(62, 45);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown2.TabIndex = 1;
+            this.button1.Location = new System.Drawing.Point(244, 42);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "MV to Origin";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // numericUpDown4
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(25, 73);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(31, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "z mm";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(62, 19);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 47);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "y mm";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(62, 71);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown3.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "x mm";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // SendCommandButton
-            // 
-            this.SendCommandButton.Location = new System.Drawing.Point(6, 19);
-            this.SendCommandButton.Name = "SendCommandButton";
-            this.SendCommandButton.Size = new System.Drawing.Size(98, 23);
-            this.SendCommandButton.TabIndex = 0;
-            this.SendCommandButton.Text = "Send Command";
-            this.SendCommandButton.UseVisualStyleBackColor = true;
-            this.SendCommandButton.Click += new System.EventHandler(this.SendCommandButton_Click);
-            // 
-            // VenusCommandBox
-            // 
-            this.VenusCommandBox.Location = new System.Drawing.Point(110, 21);
-            this.VenusCommandBox.Name = "VenusCommandBox";
-            this.VenusCommandBox.Size = new System.Drawing.Size(221, 20);
-            this.VenusCommandBox.TabIndex = 1;
-            this.VenusCommandBox.Text = "0 0 0 setpos";
-            this.VenusCommandBox.TextChanged += new System.EventHandler(this.VenusCommandBox_TextChanged);
-            this.VenusCommandBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VenusCommandBox_KeyDown);
-            // 
-            // SetOriginButton
-            // 
-            this.SetOriginButton.Location = new System.Drawing.Point(244, 16);
-            this.SetOriginButton.Name = "SetOriginButton";
-            this.SetOriginButton.Size = new System.Drawing.Size(75, 23);
-            this.SetOriginButton.TabIndex = 7;
-            this.SetOriginButton.Text = "Set Origin";
-            this.SetOriginButton.UseVisualStyleBackColor = true;
+            this.numericUpDown4.Location = new System.Drawing.Point(66, 45);
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(140, 20);
+            this.numericUpDown4.TabIndex = 1;
             // 
             // MoveToOriginButton
             // 
@@ -262,31 +208,6 @@
             this.MoveToOriginButton.TabIndex = 8;
             this.MoveToOriginButton.Text = "MV to Origin";
             this.MoveToOriginButton.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.numericUpDown4);
-            this.groupBox1.Controls.Add(this.MoveToOriginButton);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.numericUpDown5);
-            this.groupBox1.Controls.Add(this.SetOriginButton);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.numericUpDown6);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(6, 272);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(325, 232);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Relative Move";
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(66, 45);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown4.TabIndex = 1;
             // 
             // label4
             // 
@@ -304,6 +225,15 @@
             this.numericUpDown5.Name = "numericUpDown5";
             this.numericUpDown5.Size = new System.Drawing.Size(140, 20);
             this.numericUpDown5.TabIndex = 0;
+            // 
+            // SetOriginButton
+            // 
+            this.SetOriginButton.Location = new System.Drawing.Point(244, 16);
+            this.SetOriginButton.Name = "SetOriginButton";
+            this.SetOriginButton.Size = new System.Drawing.Size(75, 23);
+            this.SetOriginButton.TabIndex = 7;
+            this.SetOriginButton.Text = "Set Origin";
+            this.SetOriginButton.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -332,37 +262,213 @@
             this.label6.Text = "x mm";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // button1
+            // RelativeMoveGroupBox
             // 
-            this.button1.Location = new System.Drawing.Point(244, 42);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "MV to Origin";
-            this.button1.UseVisualStyleBackColor = true;
+            this.RelativeMoveGroupBox.Controls.Add(this.moveAllAxes);
+            this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeZ);
+            this.RelativeMoveGroupBox.Controls.Add(this.movePositiveZ);
+            this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeY);
+            this.RelativeMoveGroupBox.Controls.Add(this.movePositiveY);
+            this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeX);
+            this.RelativeMoveGroupBox.Controls.Add(this.movePositiveX);
+            this.RelativeMoveGroupBox.Controls.Add(this.CaptureArrowKeysCheckBox);
+            this.RelativeMoveGroupBox.Controls.Add(this.RMoveY);
+            this.RelativeMoveGroupBox.Controls.Add(this.label3);
+            this.RelativeMoveGroupBox.Controls.Add(this.RMoveX);
+            this.RelativeMoveGroupBox.Controls.Add(this.label2);
+            this.RelativeMoveGroupBox.Controls.Add(this.RMoveZ);
+            this.RelativeMoveGroupBox.Controls.Add(this.label1);
+            this.RelativeMoveGroupBox.Location = new System.Drawing.Point(6, 152);
+            this.RelativeMoveGroupBox.Name = "RelativeMoveGroupBox";
+            this.RelativeMoveGroupBox.Size = new System.Drawing.Size(325, 218);
+            this.RelativeMoveGroupBox.TabIndex = 6;
+            this.RelativeMoveGroupBox.TabStop = false;
+            this.RelativeMoveGroupBox.Text = "Relative Move";
             // 
-            // MainForm
+            // moveAllAxes
+            // 
+            this.moveAllAxes.Location = new System.Drawing.Point(244, 128);
+            this.moveAllAxes.Name = "moveAllAxes";
+            this.moveAllAxes.Size = new System.Drawing.Size(75, 23);
+            this.moveAllAxes.TabIndex = 13;
+            this.moveAllAxes.Text = "All axes";
+            this.moveAllAxes.UseVisualStyleBackColor = true;
+			this.moveAllAxes.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // moveNegativeZ
+            // 
+            this.moveNegativeZ.Location = new System.Drawing.Point(199, 186);
+            this.moveNegativeZ.Name = "moveNegativeZ";
+            this.moveNegativeZ.Size = new System.Drawing.Size(28, 23);
+            this.moveNegativeZ.TabIndex = 12;
+            this.moveNegativeZ.Text = "z-";
+            this.moveNegativeZ.UseVisualStyleBackColor = true;
+			this.moveNegativeZ.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // movePositiveZ
+            // 
+            this.movePositiveZ.Location = new System.Drawing.Point(199, 128);
+            this.movePositiveZ.Name = "movePositiveZ";
+            this.movePositiveZ.Size = new System.Drawing.Size(28, 23);
+            this.movePositiveZ.TabIndex = 11;
+            this.movePositiveZ.Text = "z+";
+            this.movePositiveZ.UseVisualStyleBackColor = true;
+			this.movePositiveZ.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // moveNegativeY
+            // 
+            this.moveNegativeY.Location = new System.Drawing.Point(87, 186);
+            this.moveNegativeY.Name = "moveNegativeY";
+            this.moveNegativeY.Size = new System.Drawing.Size(28, 23);
+            this.moveNegativeY.TabIndex = 10;
+            this.moveNegativeY.Text = "y-";
+            this.moveNegativeY.UseVisualStyleBackColor = true;
+			this.moveNegativeY.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // movePositiveY
+            // 
+            this.movePositiveY.Location = new System.Drawing.Point(87, 128);
+            this.movePositiveY.Name = "movePositiveY";
+            this.movePositiveY.Size = new System.Drawing.Size(28, 23);
+            this.movePositiveY.TabIndex = 9;
+            this.movePositiveY.Text = "y+";
+            this.movePositiveY.UseVisualStyleBackColor = true;
+			this.movePositiveY.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // moveNegativeX
+            // 
+            this.moveNegativeX.Location = new System.Drawing.Point(62, 157);
+            this.moveNegativeX.Name = "moveNegativeX";
+            this.moveNegativeX.Size = new System.Drawing.Size(28, 23);
+            this.moveNegativeX.TabIndex = 8;
+            this.moveNegativeX.Text = "x-";
+            this.moveNegativeX.UseVisualStyleBackColor = true;
+			this.moveNegativeX.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // movePositiveX
+            // 
+            this.movePositiveX.Location = new System.Drawing.Point(111, 157);
+            this.movePositiveX.Name = "movePositiveX";
+            this.movePositiveX.Size = new System.Drawing.Size(28, 23);
+            this.movePositiveX.TabIndex = 7;
+            this.movePositiveX.Text = "x+";
+            this.movePositiveX.UseVisualStyleBackColor = true;
+			this.movePositiveX.Click += new System.EventHandler(this.RelativeMove_Click);
+            // 
+            // CaptureArrowKeysCheckBox
+            // 
+            this.CaptureArrowKeysCheckBox.AutoSize = true;
+            this.CaptureArrowKeysCheckBox.Location = new System.Drawing.Point(120, 97);
+            this.CaptureArrowKeysCheckBox.Name = "CaptureArrowKeysCheckBox";
+            this.CaptureArrowKeysCheckBox.Size = new System.Drawing.Size(117, 17);
+            this.CaptureArrowKeysCheckBox.TabIndex = 6;
+            this.CaptureArrowKeysCheckBox.Text = "Capture arrow keys";
+            this.CaptureArrowKeysCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // RMoveY
+            // 
+            this.RMoveY.Location = new System.Drawing.Point(62, 45);
+            this.RMoveY.Name = "RMoveY";
+            this.RMoveY.Size = new System.Drawing.Size(140, 20);
+            this.RMoveY.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(25, 73);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(31, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "z mm";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // RMoveX
+            // 
+            this.RMoveX.Location = new System.Drawing.Point(62, 19);
+            this.RMoveX.Name = "RMoveX";
+            this.RMoveX.Size = new System.Drawing.Size(140, 20);
+            this.RMoveX.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(25, 47);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "y mm";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // RMoveZ
+            // 
+            this.RMoveZ.Location = new System.Drawing.Point(62, 71);
+            this.RMoveZ.Name = "RMoveZ";
+            this.RMoveZ.Size = new System.Drawing.Size(140, 20);
+            this.RMoveZ.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(25, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "x mm";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // SendCommandButton
+            // 
+            this.SendCommandButton.Location = new System.Drawing.Point(6, 97);
+            this.SendCommandButton.Name = "SendCommandButton";
+            this.SendCommandButton.Size = new System.Drawing.Size(98, 23);
+            this.SendCommandButton.TabIndex = 0;
+            this.SendCommandButton.Text = "Send Command";
+            this.SendCommandButton.UseVisualStyleBackColor = true;
+            this.SendCommandButton.Click += new System.EventHandler(this.SendCommandButton_Click);
+            // 
+            // VenusCommandBox
+            // 
+            this.VenusCommandBox.Location = new System.Drawing.Point(110, 99);
+            this.VenusCommandBox.Name = "VenusCommandBox";
+            this.VenusCommandBox.Size = new System.Drawing.Size(221, 20);
+            this.VenusCommandBox.TabIndex = 1;
+            this.VenusCommandBox.Text = "0 0 0 setpos";
+            this.VenusCommandBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.VenusCommandBox_KeyDown);
+            // 
+            // NIDAQmxControlBox
+            // 
+            this.NIDAQmxControlBox.Location = new System.Drawing.Point(355, 12);
+            this.NIDAQmxControlBox.Name = "NIDAQmxControlBox";
+            this.NIDAQmxControlBox.Size = new System.Drawing.Size(322, 506);
+            this.NIDAQmxControlBox.TabIndex = 1;
+            this.NIDAQmxControlBox.TabStop = false;
+            this.NIDAQmxControlBox.Text = "NI-DAQmx Control";
+            // 
+            // CoDASyncWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 679);
+            this.Controls.Add(this.NIDAQmxControlBox);
             this.Controls.Add(this.CorvusControlGroup);
-            this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Name = "CoDASyncWindow";
+            this.Text = "CoDASync";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownHandler);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpHandler);
             this.CorvusControlGroup.ResumeLayout(false);
             this.CorvusControlGroup.PerformLayout();
-            this.RelativeMoveGroupBox.ResumeLayout(false);
-            this.RelativeMoveGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.CorvusConfigurationBox.ResumeLayout(false);
+            this.CorvusConfigurationBox.PerformLayout();
+            this.OriginSettingsBox.ResumeLayout(false);
+            this.OriginSettingsBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.RelativeMoveGroupBox.ResumeLayout(false);
+            this.RelativeMoveGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RMoveY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RMoveX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RMoveZ)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -372,10 +478,10 @@
         private System.Windows.Forms.GroupBox CorvusControlGroup;
         private System.Windows.Forms.Button SendCommandButton;
         private System.Windows.Forms.TextBox VenusCommandBox;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown RMoveX;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown RMoveZ;
+        private System.Windows.Forms.NumericUpDown RMoveY;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox RelativeMoveGroupBox;
@@ -387,7 +493,7 @@
         private System.Windows.Forms.Button moveNegativeX;
         private System.Windows.Forms.Button movePositiveX;
         private System.Windows.Forms.CheckBox CaptureArrowKeysCheckBox;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox OriginSettingsBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.Button MoveToOriginButton;
@@ -397,5 +503,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox CorvusConfigurationBox;
+        private System.Windows.Forms.Button ConnectPortButton;
+        private System.Windows.Forms.TextBox BaudRateTextBox;
+        private System.Windows.Forms.TextBox PortTextBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button ExecListingButton;
+        private System.Windows.Forms.TextBox ListingFilename;
+        private System.Windows.Forms.GroupBox NIDAQmxControlBox;
     }
 }

@@ -10,15 +10,20 @@ using System.IO;
 
 namespace CoDASync
 {
-	// marked as unsafe to use pointers
     class DAQManager
     {
-        private Task acquisitionTask; //N. I. Task. It uses analogMultiChannelReader to get data from control board of the load cell.
+        private Task acquisitionTask; // N. I. Task. It uses analogMultiChannelReader to get data from control board of the load cell.
         private AnalogMultiChannelReader analogMultiChannelReader;
 		private double rate;
         public NationalInstruments.AnalogWaveform<double>[] data
 		{
-			get ;
+			/* 
+				get: data must be readable by external objects
+				set: data must not be written by external objects
+				
+				tl;dr: setting data public but read only 
+			*/
+			get ; 
 			private set ;
 		}
 		private int sampleNumber;
@@ -27,6 +32,7 @@ namespace CoDASync
 		
 		// used to signal that acquisition is completed and data is available to consume
 		private EventWaitHandle dataAvailable;
+		// used to signal that data has been consumed and further reading will not overwrite unused data
 		private EventWaitHandle dataConsumed;
 		
 		// acquisition lock: this is used to guarantee that every acquisition is started in mutual exclusion with other acquisitions.
@@ -155,7 +161,7 @@ namespace CoDASync
 		}
 		
 		// call this function after calling Start acquisition
-		// and before usign Data
+		// and before using Data
 		public void WaitForData()
 		{
 			dataAvailable.WaitOne();
@@ -178,6 +184,7 @@ namespace CoDASync
 			DM.StartAcquisition(15);
 			DM.WaitForData();
 			NationalInstruments.AnalogWaveform<double>[] test_data = DM.data;
+			DM.SignalDataConsumed();
 			
 			// print data
 			String outs = "";
@@ -194,10 +201,7 @@ namespace CoDASync
 			
 			DM.SignalDataConsumed();
 			
-			File.WriteAllText(".\\Hello.txt", outs);
-			
-			Console.ReadLine();
-			Thread.Sleep(20000);
+			File.WriteAllText("D:\\OrigliaMarco\\CoDASync\\Hello.txt", outs);
 		}
 
         public static void TestSingleAcquisition()

@@ -9,7 +9,7 @@ namespace CoDASync
 {
     class MainClass
     {
-        public static void Main(string[] args){
+        /*public static void Main(string[] args){
             //CorvusManager.CorvusManagerTest();
             //DAQManager.TestSingleAcquisition(); // OK funziona
 
@@ -21,6 +21,6 @@ namespace CoDASync
             //Application.Run(new MainForm());
 			
 			DAQManager.TestDAQManager();
-        }
+        }*/
     }
 }
