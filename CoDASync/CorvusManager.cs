@@ -53,6 +53,12 @@ namespace CoDASync
 			return true;
 		}
 		
+		public bool setpos(float x, float y, float z){
+			sendCommand(packCommand("setpos", x, y, z));
+			
+			return true;
+		}
+		
 		public static void CorvusManagerTest(){
 			CorvusManager cm = new CorvusManager("COM6", 57600);
             cm.rmove(-6, -5, -2);

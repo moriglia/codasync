@@ -57,8 +57,19 @@ namespace CoDASync
 
         public void sendVenusCommand(String venusCommand)
         {
-			if (IsCMSet)
-				CM.sendCommand(venusCommand);
+			// check whether port is open
+			if (!IsCMSet)
+			{
+				MessageBox.Show(
+					"Not Connected to Corvus Platform through serial port", 
+					"No port connection error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return ;
+			} 
+			
+			CM.sendCommand(venusCommand);
         }
 
         private void SendCommandButton_Click(object sender, EventArgs e)
@@ -69,6 +80,7 @@ namespace CoDASync
 		// relative move section ------------------------------------------------
 		private void RelativeMove_Click(object sender, EventArgs ea)
 		{
+			// check whether port is open
 			if (!IsCMSet)
 			{
 				MessageBox.Show(
@@ -80,6 +92,7 @@ namespace CoDASync
 				return ;
 			}
 			
+			// get differential coordinates from user input
 			float x = 0, y = 0, z = 0;
 			String txt = ((System.Windows.Forms.Button)sender).Text;
 			switch(txt)
@@ -108,17 +121,86 @@ namespace CoDASync
 					z = -(float)this.RMoveZ.Value;
 					break;
 				
-				// Move all button
+				// Move all axes button
 				default:
 					x = (float)this.RMoveX.Value;
 					y = (float)this.RMoveY.Value;
 					z = (float)this.RMoveZ.Value;
 					break;
 			}
+			
+			// send command to platform
 			CM.rmove(x, y, z);
 		}
 		
 		// ----------------------------------------------------------------------
+		
+		
+		// Set origin -----------------------------------------------------------
+		public void SetOriginButton_Click(object sender, EventArgs ea)
+		{
+			// check whether port is open
+			if (!IsCMSet)
+			{
+				MessageBox.Show(
+					"Not Connected to Corvus Platform through serial port", 
+					"No port connection error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return ;
+			}
+			
+			// get origin coordinates from user input
+			float x = (float)this.OriginX.Value;
+			float y = (float)this.OriginY.Value;
+			float z = (float)this.OriginZ.Value;
+			
+			// send position to Corvus platform
+			CM.setpos(x, y, z);
+		}
+		// ----------------------------------------------------------------------
+		
+		// Move to origin -------------------------------------------------------
+		public void MoveToOriginButton_Click(object sender, EventArgs ea)
+		{
+			// check whether port is open
+			if (!IsCMSet)
+			{
+				MessageBox.Show(
+					"Not Connected to Corvus Platform through serial port", 
+					"No port connection error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return ;
+			}
+			
+			CM.move(0,0,0);
+		}
+		
+		// Move to position ------------------------------------------------------
+		public void MoveToPositionButton_Click(object sender, EventArgs ea)
+		{
+			// check whether port is open
+			if (!IsCMSet)
+			{
+				MessageBox.Show(
+					"Not Connected to Corvus Platform through serial port", 
+					"No port connection error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return ;
+			}
+			
+			// get origin coordinates from user input
+			float x = (float)this.OriginX.Value;
+			float y = (float)this.OriginY.Value;
+			float z = (float)this.OriginZ.Value;
+			
+			CM.move(x,y,z);
+		}
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)
         {

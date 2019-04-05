@@ -38,14 +38,13 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.OriginSettingsBox = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.OriginY = new System.Windows.Forms.NumericUpDown();
             this.MoveToOriginButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.OriginX = new System.Windows.Forms.NumericUpDown();
             this.SetOriginButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.OriginZ = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.RelativeMoveGroupBox = new System.Windows.Forms.GroupBox();
             this.moveAllAxes = new System.Windows.Forms.Button();
@@ -55,7 +54,6 @@
             this.movePositiveY = new System.Windows.Forms.Button();
             this.moveNegativeX = new System.Windows.Forms.Button();
             this.movePositiveX = new System.Windows.Forms.Button();
-            this.CaptureArrowKeysCheckBox = new System.Windows.Forms.CheckBox();
             this.RMoveY = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.RMoveX = new System.Windows.Forms.NumericUpDown();
@@ -65,12 +63,13 @@
             this.SendCommandButton = new System.Windows.Forms.Button();
             this.VenusCommandBox = new System.Windows.Forms.TextBox();
             this.NIDAQmxControlBox = new System.Windows.Forms.GroupBox();
+            this.MoveToPositionButton = new System.Windows.Forms.Button();
             this.CorvusControlGroup.SuspendLayout();
             this.CorvusConfigurationBox.SuspendLayout();
             this.OriginSettingsBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginZ)).BeginInit();
             this.RelativeMoveGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RMoveY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RMoveX)).BeginInit();
@@ -168,46 +167,54 @@
             // 
             // OriginSettingsBox
             // 
-            this.OriginSettingsBox.Controls.Add(this.button1);
-            this.OriginSettingsBox.Controls.Add(this.numericUpDown4);
+            this.OriginSettingsBox.Controls.Add(this.MoveToPositionButton);
+            this.OriginSettingsBox.Controls.Add(this.OriginY);
             this.OriginSettingsBox.Controls.Add(this.MoveToOriginButton);
             this.OriginSettingsBox.Controls.Add(this.label4);
-            this.OriginSettingsBox.Controls.Add(this.numericUpDown5);
+            this.OriginSettingsBox.Controls.Add(this.OriginX);
             this.OriginSettingsBox.Controls.Add(this.SetOriginButton);
             this.OriginSettingsBox.Controls.Add(this.label5);
-            this.OriginSettingsBox.Controls.Add(this.numericUpDown6);
+            this.OriginSettingsBox.Controls.Add(this.OriginZ);
             this.OriginSettingsBox.Controls.Add(this.label6);
-            this.OriginSettingsBox.Location = new System.Drawing.Point(6, 376);
+            this.OriginSettingsBox.Location = new System.Drawing.Point(6, 347);
             this.OriginSettingsBox.Name = "OriginSettingsBox";
-            this.OriginSettingsBox.Size = new System.Drawing.Size(325, 161);
+            this.OriginSettingsBox.Size = new System.Drawing.Size(325, 100);
             this.OriginSettingsBox.TabIndex = 14;
             this.OriginSettingsBox.TabStop = false;
             this.OriginSettingsBox.Text = "Origin Settings";
             // 
-            // button1
+            // OriginY
             // 
-            this.button1.Location = new System.Drawing.Point(244, 42);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "MV to Origin";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(66, 45);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown4.TabIndex = 1;
+            this.OriginY.DecimalPlaces = 3;
+            this.OriginY.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
+            this.OriginY.Location = new System.Drawing.Point(66, 45);
+            this.OriginY.Maximum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            0});
+            this.OriginY.Minimum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            -2147483648});
+            this.OriginY.Name = "OriginY";
+            this.OriginY.Size = new System.Drawing.Size(140, 20);
+            this.OriginY.TabIndex = 1;
             // 
             // MoveToOriginButton
             // 
-            this.MoveToOriginButton.Location = new System.Drawing.Point(244, 68);
+            this.MoveToOriginButton.Location = new System.Drawing.Point(244, 42);
             this.MoveToOriginButton.Name = "MoveToOriginButton";
             this.MoveToOriginButton.Size = new System.Drawing.Size(75, 23);
             this.MoveToOriginButton.TabIndex = 8;
             this.MoveToOriginButton.Text = "MV to Origin";
             this.MoveToOriginButton.UseVisualStyleBackColor = true;
+			this.MoveToOriginButton.Click += new System.EventHandler(this.MoveToOriginButton_Click);
             // 
             // label4
             // 
@@ -219,12 +226,28 @@
             this.label4.Text = "z mm";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // numericUpDown5
+            // OriginX
             // 
-            this.numericUpDown5.Location = new System.Drawing.Point(66, 19);
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown5.TabIndex = 0;
+            this.OriginX.DecimalPlaces = 3;
+            this.OriginX.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
+            this.OriginX.Location = new System.Drawing.Point(66, 19);
+            this.OriginX.Maximum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            0});
+            this.OriginX.Minimum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            -2147483648});
+            this.OriginX.Name = "OriginX";
+            this.OriginX.Size = new System.Drawing.Size(140, 20);
+            this.OriginX.TabIndex = 0;
             // 
             // SetOriginButton
             // 
@@ -234,6 +257,7 @@
             this.SetOriginButton.TabIndex = 7;
             this.SetOriginButton.Text = "Set Origin";
             this.SetOriginButton.UseVisualStyleBackColor = true;
+            this.SetOriginButton.Click += new System.EventHandler(this.SetOriginButton_Click);
             // 
             // label5
             // 
@@ -245,12 +269,28 @@
             this.label5.Text = "y mm";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // numericUpDown6
+            // OriginZ
             // 
-            this.numericUpDown6.Location = new System.Drawing.Point(66, 71);
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(140, 20);
-            this.numericUpDown6.TabIndex = 2;
+            this.OriginZ.DecimalPlaces = 3;
+            this.OriginZ.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
+            this.OriginZ.Location = new System.Drawing.Point(66, 71);
+            this.OriginZ.Maximum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            0});
+            this.OriginZ.Minimum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            -2147483648});
+            this.OriginZ.Name = "OriginZ";
+            this.OriginZ.Size = new System.Drawing.Size(140, 20);
+            this.OriginZ.TabIndex = 2;
             // 
             // label6
             // 
@@ -271,7 +311,6 @@
             this.RelativeMoveGroupBox.Controls.Add(this.movePositiveY);
             this.RelativeMoveGroupBox.Controls.Add(this.moveNegativeX);
             this.RelativeMoveGroupBox.Controls.Add(this.movePositiveX);
-            this.RelativeMoveGroupBox.Controls.Add(this.CaptureArrowKeysCheckBox);
             this.RelativeMoveGroupBox.Controls.Add(this.RMoveY);
             this.RelativeMoveGroupBox.Controls.Add(this.label3);
             this.RelativeMoveGroupBox.Controls.Add(this.RMoveX);
@@ -280,94 +319,100 @@
             this.RelativeMoveGroupBox.Controls.Add(this.label1);
             this.RelativeMoveGroupBox.Location = new System.Drawing.Point(6, 152);
             this.RelativeMoveGroupBox.Name = "RelativeMoveGroupBox";
-            this.RelativeMoveGroupBox.Size = new System.Drawing.Size(325, 218);
+            this.RelativeMoveGroupBox.Size = new System.Drawing.Size(325, 189);
             this.RelativeMoveGroupBox.TabIndex = 6;
             this.RelativeMoveGroupBox.TabStop = false;
             this.RelativeMoveGroupBox.Text = "Relative Move";
             // 
             // moveAllAxes
             // 
-            this.moveAllAxes.Location = new System.Drawing.Point(244, 128);
+            this.moveAllAxes.Location = new System.Drawing.Point(244, 101);
             this.moveAllAxes.Name = "moveAllAxes";
             this.moveAllAxes.Size = new System.Drawing.Size(75, 23);
             this.moveAllAxes.TabIndex = 13;
             this.moveAllAxes.Text = "All axes";
             this.moveAllAxes.UseVisualStyleBackColor = true;
-			this.moveAllAxes.Click += new System.EventHandler(this.RelativeMove_Click);
+            this.moveAllAxes.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // moveNegativeZ
             // 
-            this.moveNegativeZ.Location = new System.Drawing.Point(199, 186);
+            this.moveNegativeZ.Location = new System.Drawing.Point(174, 159);
             this.moveNegativeZ.Name = "moveNegativeZ";
             this.moveNegativeZ.Size = new System.Drawing.Size(28, 23);
             this.moveNegativeZ.TabIndex = 12;
             this.moveNegativeZ.Text = "z-";
             this.moveNegativeZ.UseVisualStyleBackColor = true;
-			this.moveNegativeZ.Click += new System.EventHandler(this.RelativeMove_Click);
+            this.moveNegativeZ.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // movePositiveZ
             // 
-            this.movePositiveZ.Location = new System.Drawing.Point(199, 128);
+            this.movePositiveZ.Location = new System.Drawing.Point(174, 101);
             this.movePositiveZ.Name = "movePositiveZ";
             this.movePositiveZ.Size = new System.Drawing.Size(28, 23);
             this.movePositiveZ.TabIndex = 11;
             this.movePositiveZ.Text = "z+";
             this.movePositiveZ.UseVisualStyleBackColor = true;
-			this.movePositiveZ.Click += new System.EventHandler(this.RelativeMove_Click);
+            this.movePositiveZ.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // moveNegativeY
             // 
-            this.moveNegativeY.Location = new System.Drawing.Point(87, 186);
+            this.moveNegativeY.Location = new System.Drawing.Point(87, 159);
             this.moveNegativeY.Name = "moveNegativeY";
             this.moveNegativeY.Size = new System.Drawing.Size(28, 23);
             this.moveNegativeY.TabIndex = 10;
             this.moveNegativeY.Text = "y-";
             this.moveNegativeY.UseVisualStyleBackColor = true;
-			this.moveNegativeY.Click += new System.EventHandler(this.RelativeMove_Click);
+            this.moveNegativeY.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // movePositiveY
             // 
-            this.movePositiveY.Location = new System.Drawing.Point(87, 128);
+            this.movePositiveY.Location = new System.Drawing.Point(87, 101);
             this.movePositiveY.Name = "movePositiveY";
             this.movePositiveY.Size = new System.Drawing.Size(28, 23);
             this.movePositiveY.TabIndex = 9;
             this.movePositiveY.Text = "y+";
             this.movePositiveY.UseVisualStyleBackColor = true;
-			this.movePositiveY.Click += new System.EventHandler(this.RelativeMove_Click);
+            this.movePositiveY.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // moveNegativeX
             // 
-            this.moveNegativeX.Location = new System.Drawing.Point(62, 157);
+            this.moveNegativeX.Location = new System.Drawing.Point(62, 130);
             this.moveNegativeX.Name = "moveNegativeX";
             this.moveNegativeX.Size = new System.Drawing.Size(28, 23);
             this.moveNegativeX.TabIndex = 8;
             this.moveNegativeX.Text = "x-";
             this.moveNegativeX.UseVisualStyleBackColor = true;
-			this.moveNegativeX.Click += new System.EventHandler(this.RelativeMove_Click);
+            this.moveNegativeX.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // movePositiveX
             // 
-            this.movePositiveX.Location = new System.Drawing.Point(111, 157);
+            this.movePositiveX.Location = new System.Drawing.Point(111, 130);
             this.movePositiveX.Name = "movePositiveX";
             this.movePositiveX.Size = new System.Drawing.Size(28, 23);
             this.movePositiveX.TabIndex = 7;
             this.movePositiveX.Text = "x+";
             this.movePositiveX.UseVisualStyleBackColor = true;
-			this.movePositiveX.Click += new System.EventHandler(this.RelativeMove_Click);
-            // 
-            // CaptureArrowKeysCheckBox
-            // 
-            this.CaptureArrowKeysCheckBox.AutoSize = true;
-            this.CaptureArrowKeysCheckBox.Location = new System.Drawing.Point(120, 97);
-            this.CaptureArrowKeysCheckBox.Name = "CaptureArrowKeysCheckBox";
-            this.CaptureArrowKeysCheckBox.Size = new System.Drawing.Size(117, 17);
-            this.CaptureArrowKeysCheckBox.TabIndex = 6;
-            this.CaptureArrowKeysCheckBox.Text = "Capture arrow keys";
-            this.CaptureArrowKeysCheckBox.UseVisualStyleBackColor = true;
+            this.movePositiveX.Click += new System.EventHandler(this.RelativeMove_Click);
             // 
             // RMoveY
             // 
+            this.RMoveY.DecimalPlaces = 3;
+            this.RMoveY.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
             this.RMoveY.Location = new System.Drawing.Point(62, 45);
+            this.RMoveY.Maximum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            0});
+            this.RMoveY.Minimum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            -2147483648});
             this.RMoveY.Name = "RMoveY";
             this.RMoveY.Size = new System.Drawing.Size(140, 20);
             this.RMoveY.TabIndex = 1;
@@ -384,7 +429,23 @@
             // 
             // RMoveX
             // 
+            this.RMoveX.DecimalPlaces = 3;
+            this.RMoveX.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
             this.RMoveX.Location = new System.Drawing.Point(62, 19);
+            this.RMoveX.Maximum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            0});
+            this.RMoveX.Minimum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            -2147483648});
             this.RMoveX.Name = "RMoveX";
             this.RMoveX.Size = new System.Drawing.Size(140, 20);
             this.RMoveX.TabIndex = 0;
@@ -401,7 +462,23 @@
             // 
             // RMoveZ
             // 
+            this.RMoveZ.DecimalPlaces = 3;
+            this.RMoveZ.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
             this.RMoveZ.Location = new System.Drawing.Point(62, 71);
+            this.RMoveZ.Maximum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            0});
+            this.RMoveZ.Minimum = new decimal(new int[] {
+            16383,
+            0,
+            0,
+            -2147483648});
             this.RMoveZ.Name = "RMoveZ";
             this.RMoveZ.Size = new System.Drawing.Size(140, 20);
             this.RMoveZ.TabIndex = 2;
@@ -444,6 +521,16 @@
             this.NIDAQmxControlBox.TabStop = false;
             this.NIDAQmxControlBox.Text = "NI-DAQmx Control";
             // 
+            // MoveToPositionButton
+            // 
+            this.MoveToPositionButton.Location = new System.Drawing.Point(244, 68);
+            this.MoveToPositionButton.Name = "MoveToPositionButton";
+            this.MoveToPositionButton.Size = new System.Drawing.Size(75, 23);
+            this.MoveToPositionButton.TabIndex = 9;
+            this.MoveToPositionButton.Text = "MV to Pos";
+            this.MoveToPositionButton.UseVisualStyleBackColor = true;
+			this.MoveToPositionButton.Click += new System.EventHandler(this.MoveToPositionButton_Click);
+            // 
             // CoDASyncWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -461,9 +548,9 @@
             this.CorvusConfigurationBox.PerformLayout();
             this.OriginSettingsBox.ResumeLayout(false);
             this.OriginSettingsBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginZ)).EndInit();
             this.RelativeMoveGroupBox.ResumeLayout(false);
             this.RelativeMoveGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RMoveY)).EndInit();
@@ -492,16 +579,14 @@
         private System.Windows.Forms.Button movePositiveY;
         private System.Windows.Forms.Button moveNegativeX;
         private System.Windows.Forms.Button movePositiveX;
-        private System.Windows.Forms.CheckBox CaptureArrowKeysCheckBox;
         private System.Windows.Forms.GroupBox OriginSettingsBox;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown OriginY;
         private System.Windows.Forms.Button MoveToOriginButton;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numericUpDown5;
+        private System.Windows.Forms.NumericUpDown OriginX;
         private System.Windows.Forms.Button SetOriginButton;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.NumericUpDown OriginZ;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox CorvusConfigurationBox;
         private System.Windows.Forms.Button ConnectPortButton;
@@ -512,5 +597,6 @@
         private System.Windows.Forms.Button ExecListingButton;
         private System.Windows.Forms.TextBox ListingFilename;
         private System.Windows.Forms.GroupBox NIDAQmxControlBox;
+        private System.Windows.Forms.Button MoveToPositionButton;
     }
 }
