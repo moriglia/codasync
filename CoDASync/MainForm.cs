@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+
 
 namespace CoDASync
 {
@@ -200,6 +202,76 @@ namespace CoDASync
 			float z = (float)this.OriginZ.Value;
 			
 			CM.move(x,y,z);
+		}
+		
+		// string parser for getting channels to use for DAQmx data acquisition
+		protected int [] parseIntRange(String s)
+		{
+			String pattern_range = @"(\d+)\s*-\s*(\d+)";
+			String pattern_single = @"(?<!-\s*)(\d+)(?!\s*-)";
+			
+			List<int> tmp = new List<int>();
+			int length = 0;
+			
+			// get all matches for ranges like "5 - 12"
+			foreach(Match m in Regex.Matches(s, pattern_range))
+			{
+				// get range boundaries
+				int low = int.Parse(m.Groups[1].Value);
+				int high = int.Parse(m.Groups[2].Value);
+				
+				// reorder boundaries
+				if (low > high) 
+				{
+					int temp = low;
+					low = high;
+					high = temp;
+				}
+				
+				// insert data into array
+				for ( int i = 0; low <= high; ++low) 
+				{
+					tmp.Add(low);
+					++length;
+				}
+			}
+			
+			// get all matches for single values like "... , 3, ..."
+			foreach (Match m in Regex.Matches(s, pattern_single))
+			{
+				int v = int.Parse(m.Groups[0].Value);
+				
+				tmp.Add(v);
+				++length;
+			}
+			
+			// reorder array 
+			tmp.Sort();
+			
+			// remove duplicates;
+			for (int i = 1; i<length; )
+			{
+				if (tmp[i] == tmp[i-1])
+				{
+					tmp.RemoveAt(i);
+					--length;
+					continue;
+				}
+				++i;
+			}
+			
+			return tmp.ToArray();
+		}
+		
+		// get necessary parameters and set the NIDAQmx manager
+		public void ConfigureNIDAQmxButton_Click(object sender, EventArgs ea)
+		{
+			int[] channels = parseIntRange(this.ChannelTextBox.Text);
+			String device = this.DeviceNameTextBox.Text;
+			
+			DM = new DAQManager(device, channels);
+			
+			IsDMSet = true;
 		}
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)
