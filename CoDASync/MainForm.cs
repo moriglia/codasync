@@ -36,6 +36,7 @@ namespace CoDASync
         public static void Main()
         {
 			//CorvusManager.CorvusManagerTest();
+			CorvusManager.CorvusManagerTestPos();
             Application.EnableVisualStyles();
             Application.DoEvents();
             Application.Run(new CoDASyncWindow());
@@ -43,8 +44,8 @@ namespace CoDASync
 		
 		public void ConnectPortButton_Click(object sender, EventArgs e){
 			try {
-				CorvusManager tempCM = new CorvusManager(PortTextBox.Text, Int32.Parse(BaudRateTextBox.Text));
-				CM = tempCM;
+				if (IsCMSet && CM.IsOpen) CM.Close();
+				CM = new CorvusManager(PortTextBox.Text, Int32.Parse(BaudRateTextBox.Text));
 				IsCMSet = true;
 			} catch (Exception ex){
 				MessageBox.Show(
@@ -207,7 +208,11 @@ namespace CoDASync
 		// string parser for getting channels to use for DAQmx data acquisition
 		protected int [] parseIntRange(String s)
 		{
+			// regex for ranges e.g: "13 - 20", "13- 20", "13   -20", "13-20"
 			String pattern_range = @"(\d+)\s*-\s*(\d+)";
+			
+			// regex for single natural numbers,
+			// they may be preceded or followed by anything but a "-" (which will match ranges)
 			String pattern_single = @"(?<!-\s*)(\d+)(?!\s*-)";
 			
 			List<int> tmp = new List<int>();
@@ -236,7 +241,8 @@ namespace CoDASync
 				}
 			}
 			
-			// get all matches for single values like "... , 3, ..."
+			// get all matches for single values like "... , 3, 5 12, 9 / 44, ..."
+			// the example below will get : 3, 5, 12, 9, 44
 			foreach (Match m in Regex.Matches(s, pattern_single))
 			{
 				int v = int.Parse(m.Groups[0].Value);
@@ -280,16 +286,6 @@ namespace CoDASync
             {
                 sendVenusCommand(VenusCommandBox.Text);
             }
-        }
-
-        private void KeyDownHandler(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void KeyUpHandler(object sender, KeyEventArgs e)
-        {
-
         }
     }
 }

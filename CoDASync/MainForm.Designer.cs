@@ -65,13 +65,12 @@
             this.VenusCommandBox = new System.Windows.Forms.TextBox();
             this.NIDAQmxControlBox = new System.Windows.Forms.GroupBox();
             this.NIDAQmxConfigurationBox = new System.Windows.Forms.GroupBox();
+            this.ConfigureNIDAQmxButton = new System.Windows.Forms.Button();
             this.ChannelTextBox = new System.Windows.Forms.TextBox();
             this.DeviceNameTextBox = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.CorvusStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ConfigureNIDAQmxButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.CorvusEventDisplay = new System.Windows.Forms.TextBox();
             this.CorvusControlGroup.SuspendLayout();
             this.CorvusConfigurationBox.SuspendLayout();
             this.OriginSettingsBox.SuspendLayout();
@@ -84,11 +83,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.RMoveZ)).BeginInit();
             this.NIDAQmxControlBox.SuspendLayout();
             this.NIDAQmxConfigurationBox.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // CorvusControlGroup
             // 
+            this.CorvusControlGroup.AutoSize = true;
+            this.CorvusControlGroup.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CorvusControlGroup.Controls.Add(this.CorvusEventDisplay);
             this.CorvusControlGroup.Controls.Add(this.ExecListingButton);
             this.CorvusControlGroup.Controls.Add(this.ListingFilename);
             this.CorvusControlGroup.Controls.Add(this.CorvusConfigurationBox);
@@ -541,7 +542,7 @@
             this.NIDAQmxControlBox.Controls.Add(this.NIDAQmxConfigurationBox);
             this.NIDAQmxControlBox.Location = new System.Drawing.Point(355, 12);
             this.NIDAQmxControlBox.Name = "NIDAQmxControlBox";
-            this.NIDAQmxControlBox.Size = new System.Drawing.Size(322, 655);
+            this.NIDAQmxControlBox.Size = new System.Drawing.Size(322, 642);
             this.NIDAQmxControlBox.TabIndex = 1;
             this.NIDAQmxControlBox.TabStop = false;
             this.NIDAQmxControlBox.Text = "NI-DAQmx Control";
@@ -560,6 +561,16 @@
             this.NIDAQmxConfigurationBox.TabStop = false;
             this.NIDAQmxConfigurationBox.Text = "Configure";
             // 
+            // ConfigureNIDAQmxButton
+            // 
+            this.ConfigureNIDAQmxButton.Location = new System.Drawing.Point(203, 40);
+            this.ConfigureNIDAQmxButton.Name = "ConfigureNIDAQmxButton";
+            this.ConfigureNIDAQmxButton.Size = new System.Drawing.Size(75, 23);
+            this.ConfigureNIDAQmxButton.TabIndex = 9;
+            this.ConfigureNIDAQmxButton.Text = "Configure";
+            this.ConfigureNIDAQmxButton.UseVisualStyleBackColor = true;
+            this.ConfigureNIDAQmxButton.Click += new System.EventHandler(this.ConfigureNIDAQmxButton_Click);
+            // 
             // ChannelTextBox
             // 
             this.ChannelTextBox.Location = new System.Drawing.Point(75, 42);
@@ -576,15 +587,6 @@
             this.DeviceNameTextBox.TabIndex = 7;
             this.DeviceNameTextBox.Text = "Dev2";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(9, 45);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(51, 13);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "Channels";
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -594,44 +596,34 @@
             this.label10.TabIndex = 5;
             this.label10.Text = "Device";
             // 
-            // statusStrip1
+            // label9
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CorvusStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 657);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(925, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 45);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 13);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "Channels";
             // 
-            // CorvusStatusLabel
+            // CorvusEventDisplay
             // 
-            this.CorvusStatusLabel.Name = "CorvusStatusLabel";
-            this.CorvusStatusLabel.Size = new System.Drawing.Size(88, 17);
-            this.CorvusStatusLabel.Text = "Not configured";
-            // 
-            // ConfigureNIDAQmxButton
-            // 
-            this.ConfigureNIDAQmxButton.Location = new System.Drawing.Point(203, 40);
-            this.ConfigureNIDAQmxButton.Name = "ConfigureNIDAQmxButton";
-            this.ConfigureNIDAQmxButton.Size = new System.Drawing.Size(75, 23);
-            this.ConfigureNIDAQmxButton.TabIndex = 9;
-            this.ConfigureNIDAQmxButton.Text = "Configure";
-            this.ConfigureNIDAQmxButton.UseVisualStyleBackColor = true;
-			this.ConfigureNIDAQmxButton.Click += new System.EventHandler(this.ConfigureNIDAQmxButton_Click);
+            this.CorvusEventDisplay.Location = new System.Drawing.Point(6, 453);
+            this.CorvusEventDisplay.Multiline = true;
+            this.CorvusEventDisplay.Name = "CorvusEventDisplay";
+            this.CorvusEventDisplay.ReadOnly = true;
+            this.CorvusEventDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.CorvusEventDisplay.Size = new System.Drawing.Size(325, 183);
+            this.CorvusEventDisplay.TabIndex = 18;
             // 
             // CoDASyncWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(925, 679);
-            this.Controls.Add(this.statusStrip1);
+            this.ClientSize = new System.Drawing.Size(971, 679);
             this.Controls.Add(this.NIDAQmxControlBox);
             this.Controls.Add(this.CorvusControlGroup);
             this.Name = "CoDASyncWindow";
             this.Text = "CoDASync";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyDownHandler);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyUpHandler);
             this.CorvusControlGroup.ResumeLayout(false);
             this.CorvusControlGroup.PerformLayout();
             this.CorvusConfigurationBox.ResumeLayout(false);
@@ -649,8 +641,6 @@
             this.NIDAQmxControlBox.ResumeLayout(false);
             this.NIDAQmxConfigurationBox.ResumeLayout(false);
             this.NIDAQmxConfigurationBox.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -700,7 +690,6 @@
         private System.Windows.Forms.TextBox DeviceNameTextBox;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel CorvusStatusLabel;
+        private System.Windows.Forms.TextBox CorvusEventDisplay;
     }
 }
