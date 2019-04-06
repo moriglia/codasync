@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.CorvusControlGroup = new System.Windows.Forms.GroupBox();
+            this.CorvusEventDisplay = new System.Windows.Forms.TextBox();
             this.ExecListingButton = new System.Windows.Forms.Button();
             this.ListingFilename = new System.Windows.Forms.TextBox();
             this.CorvusConfigurationBox = new System.Windows.Forms.GroupBox();
@@ -70,7 +71,14 @@
             this.DeviceNameTextBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.CorvusEventDisplay = new System.Windows.Forms.TextBox();
+            this.SamplingControlBox = new System.Windows.Forms.GroupBox();
+            this.BrowseFileButton = new System.Windows.Forms.Button();
+            this.OutputFileTextBox = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.SamplingPeriodBox = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.StartAcquisitionButton = new System.Windows.Forms.Button();
+            this.StopAcquisitionButton = new System.Windows.Forms.Button();
             this.CorvusControlGroup.SuspendLayout();
             this.CorvusConfigurationBox.SuspendLayout();
             this.OriginSettingsBox.SuspendLayout();
@@ -83,6 +91,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.RMoveZ)).BeginInit();
             this.NIDAQmxControlBox.SuspendLayout();
             this.NIDAQmxConfigurationBox.SuspendLayout();
+            this.SamplingControlBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SamplingPeriodBox)).BeginInit();
             this.SuspendLayout();
             // 
             // CorvusControlGroup
@@ -104,6 +114,16 @@
             this.CorvusControlGroup.TabIndex = 0;
             this.CorvusControlGroup.TabStop = false;
             this.CorvusControlGroup.Text = "Corvus Control";
+            // 
+            // CorvusEventDisplay
+            // 
+            this.CorvusEventDisplay.Location = new System.Drawing.Point(6, 453);
+            this.CorvusEventDisplay.Multiline = true;
+            this.CorvusEventDisplay.Name = "CorvusEventDisplay";
+            this.CorvusEventDisplay.ReadOnly = true;
+            this.CorvusEventDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.CorvusEventDisplay.Size = new System.Drawing.Size(325, 183);
+            this.CorvusEventDisplay.TabIndex = 18;
             // 
             // ExecListingButton
             // 
@@ -542,7 +562,7 @@
             this.NIDAQmxControlBox.Controls.Add(this.NIDAQmxConfigurationBox);
             this.NIDAQmxControlBox.Location = new System.Drawing.Point(355, 12);
             this.NIDAQmxControlBox.Name = "NIDAQmxControlBox";
-            this.NIDAQmxControlBox.Size = new System.Drawing.Size(322, 642);
+            this.NIDAQmxControlBox.Size = new System.Drawing.Size(322, 655);
             this.NIDAQmxControlBox.TabIndex = 1;
             this.NIDAQmxControlBox.TabStop = false;
             this.NIDAQmxControlBox.Text = "NI-DAQmx Control";
@@ -577,7 +597,7 @@
             this.ChannelTextBox.Name = "ChannelTextBox";
             this.ChannelTextBox.Size = new System.Drawing.Size(100, 20);
             this.ChannelTextBox.TabIndex = 8;
-            this.ChannelTextBox.Text = "0 - 6";
+            this.ChannelTextBox.Text = "0 - 5";
             // 
             // DeviceNameTextBox
             // 
@@ -605,21 +625,97 @@
             this.label9.TabIndex = 6;
             this.label9.Text = "Channels";
             // 
-            // CorvusEventDisplay
+            // SamplingControlBox
             // 
-            this.CorvusEventDisplay.Location = new System.Drawing.Point(6, 453);
-            this.CorvusEventDisplay.Multiline = true;
-            this.CorvusEventDisplay.Name = "CorvusEventDisplay";
-            this.CorvusEventDisplay.ReadOnly = true;
-            this.CorvusEventDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.CorvusEventDisplay.Size = new System.Drawing.Size(325, 183);
-            this.CorvusEventDisplay.TabIndex = 18;
+            this.SamplingControlBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.SamplingControlBox.Controls.Add(this.StopAcquisitionButton);
+            this.SamplingControlBox.Controls.Add(this.StartAcquisitionButton);
+            this.SamplingControlBox.Controls.Add(this.BrowseFileButton);
+            this.SamplingControlBox.Controls.Add(this.OutputFileTextBox);
+            this.SamplingControlBox.Controls.Add(this.label12);
+            this.SamplingControlBox.Controls.Add(this.SamplingPeriodBox);
+            this.SamplingControlBox.Controls.Add(this.label11);
+            this.SamplingControlBox.Location = new System.Drawing.Point(683, 12);
+            this.SamplingControlBox.Name = "SamplingControlBox";
+            this.SamplingControlBox.Size = new System.Drawing.Size(276, 655);
+            this.SamplingControlBox.TabIndex = 2;
+            this.SamplingControlBox.TabStop = false;
+            this.SamplingControlBox.Text = "Sampling Control";
+            // 
+            // BrowseFileButton
+            // 
+            this.BrowseFileButton.Location = new System.Drawing.Point(195, 88);
+            this.BrowseFileButton.Name = "BrowseFileButton";
+            this.BrowseFileButton.Size = new System.Drawing.Size(75, 23);
+            this.BrowseFileButton.TabIndex = 4;
+            this.BrowseFileButton.Text = "Browse Files";
+            this.BrowseFileButton.UseVisualStyleBackColor = true;
+            this.BrowseFileButton.Click += new System.EventHandler(this.BrowseFileButton_Click);
+            // 
+            // OutputFileTextBox
+            // 
+            this.OutputFileTextBox.Location = new System.Drawing.Point(125, 62);
+            this.OutputFileTextBox.Name = "OutputFileTextBox";
+            this.OutputFileTextBox.Size = new System.Drawing.Size(145, 20);
+            this.OutputFileTextBox.TabIndex = 3;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(13, 65);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(61, 13);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "Output File:";
+            // 
+            // SamplingPeriodBox
+            // 
+            this.SamplingPeriodBox.Location = new System.Drawing.Point(125, 38);
+            this.SamplingPeriodBox.Maximum = new decimal(new int[] {
+            -1981284352,
+            -1966660860,
+            0,
+            0});
+			this.SamplingPeriodBox.Minimum = 0;
+            this.SamplingPeriodBox.Name = "SamplingPeriodBox";
+            this.SamplingPeriodBox.Size = new System.Drawing.Size(145, 20);
+            this.SamplingPeriodBox.TabIndex = 1;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(13, 39);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(83, 13);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "Sampling Period";
+            // 
+            // StartAcquisitionButton
+            // 
+            this.StartAcquisitionButton.Location = new System.Drawing.Point(7, 122);
+            this.StartAcquisitionButton.Name = "StartAcquisitionButton";
+            this.StartAcquisitionButton.Size = new System.Drawing.Size(75, 23);
+            this.StartAcquisitionButton.TabIndex = 5;
+            this.StartAcquisitionButton.Text = "Start";
+            this.StartAcquisitionButton.UseVisualStyleBackColor = true;
+			this.StartAcquisitionButton.Click += new System.EventHandler(this.StartAcquisitionButton_Click);
+            // 
+            // StopAcquisitionButton
+            // 
+            this.StopAcquisitionButton.Location = new System.Drawing.Point(195, 122);
+            this.StopAcquisitionButton.Name = "StopAcquisitionButton";
+            this.StopAcquisitionButton.Size = new System.Drawing.Size(75, 23);
+            this.StopAcquisitionButton.TabIndex = 6;
+            this.StopAcquisitionButton.Text = "Stop";
+            this.StopAcquisitionButton.UseVisualStyleBackColor = true;
+			this.StopAcquisitionButton.Click += new System.EventHandler(this.StopAcquisitionButton_Click);
             // 
             // CoDASyncWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 679);
+            this.Controls.Add(this.SamplingControlBox);
             this.Controls.Add(this.NIDAQmxControlBox);
             this.Controls.Add(this.CorvusControlGroup);
             this.Name = "CoDASyncWindow";
@@ -641,6 +737,9 @@
             this.NIDAQmxControlBox.ResumeLayout(false);
             this.NIDAQmxConfigurationBox.ResumeLayout(false);
             this.NIDAQmxConfigurationBox.PerformLayout();
+            this.SamplingControlBox.ResumeLayout(false);
+            this.SamplingControlBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SamplingPeriodBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -691,5 +790,13 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox CorvusEventDisplay;
+        private System.Windows.Forms.GroupBox SamplingControlBox;
+        private System.Windows.Forms.Button BrowseFileButton;
+        private System.Windows.Forms.TextBox OutputFileTextBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown SamplingPeriodBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button StopAcquisitionButton;
+        private System.Windows.Forms.Button StartAcquisitionButton;
     }
 }

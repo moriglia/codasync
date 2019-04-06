@@ -5,10 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-
+using System.Timers;
+using System.IO;
 
 namespace CoDASync
 {
@@ -20,26 +22,236 @@ namespace CoDASync
 		DAQManager DM;
 		protected bool IsDMSet;
 		
+		// signaling and locking variables for acquisition completed and stored
+		protected Object __doneLocker; 
+		protected bool done;
+		
+		
+		
+		// MEMBERS TO HANDLE TIMED ACQUISITION ------------------------------------------------
+		
+		// synchronization variable for Corvus serial acquisition
+		protected AutoResetEvent __readSerialEvent;
+		
+		// synchronization variable for NIDAQmx acquisition
+		protected AutoResetEvent __readDAQEvent;
+		
+		// synchronization countdown for storing the read buffers
+		protected CountdownEvent __bufferReadyCountdown;
+		
+		// buffers for acquiring data
+		protected String position;
+		protected String sample;
+		protected String time;
+		
+		private String output;
+		
+		// name of file where to output data.
+		protected String outputFileName;
+		protected StreamWriter outputStream;
+		protected Object __outputFileStreamLocker;
+		
+		// timer for periodical acquisition
+		protected Object __timerLocker;
+		protected System.Timers.Timer samplingTimer;
+		protected bool acquisitionInProgress;
+		
+		// acquisition tasks
+		private Thread readSerialThread, readDAQThread, storeDataThread;
+		
+		// END OF MEMBERS TO HANDLE TIMED ACQUISITION ----------------------------------------- 
+		
+		
+		// Constructor
         public CoDASyncWindow()
         {
             InitializeComponent();
 			
-			//
             CM = null; //new CorvusManager("COM6", 57600);
 			IsCMSet = false;
 			
 			DM = null;
 			IsDMSet = false;
 			
+			// initialize locker for signaling condition that computation is done
+			done = true;
+			__doneLocker = new Object();
+			
+			
+			__readSerialEvent = new AutoResetEvent(false);
+			__readDAQEvent  = new AutoResetEvent(false);
+			__bufferReadyCountdown = new CountdownEvent(3);
+			
+			
+			position = null;
+			sample = null;
+			time = null;
+			output = "";
+			
+			// output file name
+			outputFileName = "";
+			outputStream = null;
+			__outputFileStreamLocker = new Object();
+			
+			// configure timer general parameters 
+			samplingTimer = new System.Timers.Timer();
+			__timerLocker = new Object();
+			samplingTimer.Elapsed += TimerHandler;
+			samplingTimer.AutoReset = true;
+			acquisitionInProgress = false;
+			
+			// create threads
+			readSerialThread = new Thread(ReadSerial);
+			readDAQThread = new Thread(ReadDAQmx);
+			storeDataThread = new Thread(Store);
         }
+		
+		
+		
+		
+		// PERIODICAL ACQUISITION FUNCTIONS ------------------------------------------------------
+		
+		// called in response to timer event
+		protected void TimerHandler(Object sender, ElapsedEventArgs eea)
+		{
+			// gain lock to check whether the previous data has been saved
+			lock(__doneLocker)
+			{
+				// check whether data has been saved
+				while(!done)
+					// temporarly release lock in order to allow done to be changed by Store()
+					Monitor.Wait(__doneLocker);
+					// when monitor.wait exits the lock is acquired back
+					
+				// we can set done to false and proceed
+				done = false;
+			}
+			
+			// tell the acquisition threads that they can proceed
+			__readSerialEvent.Set();
+			__readDAQEvent.Set();
+			
+			time = (DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss.fff");
+			__bufferReadyCountdown.Signal();
+		}
+		
+		// must be run as thread
+		protected void ReadSerial()
+		{
+			while (true)
+			{				
+				__readSerialEvent.WaitOne();
+				
+				// assume that CM has been correctly initialized
+				if (!CM.pos(ref position))
+				{
+					// handle error
+				}
+				
+				__bufferReadyCountdown.Signal();
+			}
+		}
+		
+		// must be run as thread
+		protected void ReadDAQmx()
+		{
+			double[] sam;
+			while(true)
+			{
+				__readDAQEvent.WaitOne();
+				
+				// assume that DM has been correctly initialized
+				sam = DM.Acquire();
+				
+				sample = "";
+				foreach(double d in sam)
+				{
+					sample += d.ToString() + " ";
+				}
+				
+				__bufferReadyCountdown.Signal();
+			}
+		}
+		
+		
+		// must be run as thread
+		protected void Store()
+		{
+			while(true)
+			{
+				__bufferReadyCountdown.Wait();
+				
+				try
+				{
+					outputStream.WriteLine(time + " Position: " + position + " Channels: " + sample + "\r\n");					
+				} catch (Exception e) {
+					// stop all threads
+					Console.WriteLine("Stopping all threads...");
+				}
+				
+				
+				lock(__doneLocker) done = true;
+				
+				__bufferReadyCountdown.Reset();
+			}
+		}
 
+		
+		public void TestPeriodicalAcquisition()
+		{
+			
+			CM = new CorvusManager("COM6", 57600);
+			IsCMSet = true;
+			
+			int[] channels = {0,1,2,3,4,5};
+			DM = new DAQManager("Dev2", channels);
+			IsDMSet = true;
+			
+			
+			System.Timers.Timer t = new System.Timers.Timer(1000);
+			t.Elapsed += TimerHandler;
+			t.AutoReset = true;
+			
+			
+			Thread thread_store = new Thread(Store);
+			thread_store.Start();
+			
+			Thread thread_serial = new Thread(ReadSerial);
+			thread_serial.Start();
+			
+			Thread thread_daq  = new Thread(ReadDAQmx);
+			thread_daq.Start();
+			
+			t.Enabled = true;
+			
+			Thread.Sleep(10000);
+			
+			thread_store.Abort();
+			thread_daq.Abort();
+			thread_serial.Abort();
+			
+			Console.WriteLine("Test ended, press enter to exit.");
+			Console.Read();
+			
+			File.WriteAllText("D:\\OrigliaMarco\\CoDASync\\Acquisition.txt", output);
+		}
+		
+		
+		// END OF PERIODICAL ACQIOSITION FUNCTIONS -----------------------------------------------------------
+		
+		
+		[STAThread]
         public static void Main()
         {
 			//CorvusManager.CorvusManagerTest();
-			CorvusManager.CorvusManagerTestPos();
+			//CorvusManager.CorvusManagerTestPos();
+			
             Application.EnableVisualStyles();
             Application.DoEvents();
             Application.Run(new CoDASyncWindow());
+			
+			//CoDASyncWindow csw = new CoDASyncWindow();
+			//csw.TestPeriodicalAcquisition();
         }
 		
 		public void ConnectPortButton_Click(object sender, EventArgs e){
@@ -287,5 +499,107 @@ namespace CoDASync
                 sendVenusCommand(VenusCommandBox.Text);
             }
         }
+		
+		private void BrowseFileButton_Click(Object senderk, EventArgs ea)
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Title = "Select an output file";
+			ofd.Filter = "Text Files (*.txt)|All Files(*.*)";
+			ofd.CheckFileExists = false;
+			if (ofd.ShowDialog() == DialogResult.OK)
+				OutputFileTextBox.Text = ofd.FileName;
+		}
+		
+		private void StartAcquisitionButton_Click(Object sender, EventArgs ea)
+		{
+			if (!IsCMSet || !IsDMSet)
+			{
+				MessageBox.Show(
+					"Devices not configured yet"
+				);
+				return ;
+			}
+		
+			lock(__timerLocker)
+			{	
+				if (acquisitionInProgress)
+				{
+					// handle the fact that an acquisition is aready running
+					MessageBox.Show(
+						"Cannot start a new acquisition. An acquisition is already running. Stop it before you proceed!", 
+						"Acquisition in progress",
+						MessageBoxButtons.OK,
+						MessageBoxIcon.Warning
+					);
+					return ;
+				}
+				
+				if (SamplingPeriodBox.Value == 0)
+				{
+					MessageBox.Show(
+						"A period of 0 would seem a bit as a continuous sampling, which I'm not going to do :(", 
+						"Invalid period",
+						MessageBoxButtons.OK,
+						MessageBoxIcon.Warning
+					);
+					return ;
+				}
+				
+				// configure output stream
+				try{
+					outputStream = new StreamWriter(OutputFileTextBox.Text);
+				}catch (Exception e){
+					// handle me
+				}
+				
+				// reset countdown
+				__bufferReadyCountdown.Reset();
+				
+				// start threads that cooperate in the acquisition tasks
+				readSerialThread.Start();
+				readDAQThread.Start();
+				storeDataThread.Start();
+				
+				// wait a bit to make sure the threads are ready to receive signals
+				Thread.Sleep(500);
+				
+				//Configure timer period and start acquisition
+				samplingTimer.Interval = (double)SamplingPeriodBox.Value;
+				samplingTimer.Enabled = true;
+			}
+		}
+		
+		private void StopAcquisitionButton_Click(Object sender, EventArgs ea)
+		{
+			lock(__timerLocker)
+			{
+				if (!acquisitionInProgress)
+				{
+					MessageBox.Show(
+						"No acquisition in progress. Start a new one pressing button \'Start\'",
+						"No acquisition in progress",
+						MessageBoxButtons.OK, 
+						MessageBoxIcon.Warning
+					);
+					return ;
+				}
+				
+				samplingTimer.Enabled = false;
+				
+				// stop threads that are waiting for synchronization
+				readSerialThread.Abort();
+				readDAQThread.Abort();
+				storeDataThread.Abort();
+				
+				
+				// close output stream
+				try {
+					outputStream.Close();
+					outputStream = null;
+				}catch (Exception e) {
+					// handle me
+				}
+			}
+		}
     }
 }
