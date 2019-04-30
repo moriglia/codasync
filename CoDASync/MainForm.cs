@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Timers;
 using System.IO;
+using System.Diagnostics;
 
 namespace CoDASync
 {
@@ -101,9 +102,9 @@ namespace CoDASync
 			acquisitionInProgress = false;
 			
 			// create threads
-			readSerialThread = new Thread(ReadSerial);
-			readDAQThread = new Thread(ReadDAQmx);
-			storeDataThread = new Thread(Store);
+			readSerialThread = null;
+			readDAQThread = null;
+			storeDataThread = null;
         }
 		
 		
@@ -556,6 +557,12 @@ namespace CoDASync
 				__bufferReadyCountdown.Reset();
 				
 				// start threads that cooperate in the acquisition tasks
+				Debug.Assert(readSerialThread==null && readDAQThread==null && storeDataThread==null);
+				
+				readSerialThread = new Thread(ReadSerial);
+				readDAQThread = new Thread(ReadDAQmx);
+				storeDataThread = new Thread(Store);
+
 				readSerialThread.Start();
 				readDAQThread.Start();
 				storeDataThread.Start();
@@ -566,6 +573,9 @@ namespace CoDASync
 				//Configure timer period and start acquisition
 				samplingTimer.Interval = (double)SamplingPeriodBox.Value;
 				samplingTimer.Enabled = true;
+				
+				// set mark acquisition as in progress
+				acquisitionInProgress = true;
 			}
 		}
 		
@@ -591,6 +601,9 @@ namespace CoDASync
 				readDAQThread.Abort();
 				storeDataThread.Abort();
 				
+				readSerialThread = null;
+				readDAQThread = null;
+				storeDataThread = null;
 				
 				// close output stream
 				try {
@@ -599,6 +612,8 @@ namespace CoDASync
 				}catch (Exception e) {
 					// handle me
 				}
+				
+				acquisitionInProgress = false;
 			}
 		}
     }

@@ -55,17 +55,15 @@ namespace CoDASync
 		public bool readResponse(ref String s){
 			bool retval = true;
 			
-			// read a line from the port
-			lock (__portReadLock){
-				try
-				{
-					setOpen();
-					s = ReadLine();
-				} catch (Exception e){
-					retval = false;
-				}
+			// read a line from the port			
+			try
+			{
+				setOpen();
+				s = ReadLine();
+			} catch (Exception e){
+				retval = false;
 			}
-			
+		
 			return retval;
 		}
 
@@ -83,12 +81,16 @@ namespace CoDASync
 		}
 		
 		public bool pos(ref String s){
-			// send command to get current position
-			if (!sendCommand("pos")) return false;
 			
-			// get the result
-			if(!readResponse(ref s)) return false;
-			
+			// acquire __portReadLock before acquiring __portWriteLock so that 
+			// the answer we will receive will be ours and only ours
+			lock(__portReadLock){
+				// send command to get current position
+				if (!sendCommand("pos")) return false;
+				
+				// get the result
+				if(!readResponse(ref s)) return false;
+			}
 			return true;
 		}
 		
