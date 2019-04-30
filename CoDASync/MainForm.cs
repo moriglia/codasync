@@ -60,6 +60,9 @@ namespace CoDASync
 		// acquisition tasks
 		private Thread readSerialThread, readDAQThread, storeDataThread;
 		
+		
+		private int timerCount;
+		
 		// END OF MEMBERS TO HANDLE TIMED ACQUISITION ----------------------------------------- 
 		
 		
@@ -105,6 +108,8 @@ namespace CoDASync
 			readSerialThread = null;
 			readDAQThread = null;
 			storeDataThread = null;
+			
+			timerCount = 0;
         }
 		
 		
@@ -115,6 +120,7 @@ namespace CoDASync
 		// called in response to timer event
 		protected void TimerHandler(Object sender, ElapsedEventArgs eea)
 		{
+			Console.WriteLine("TimerCall:\t" + eea.SignalTime.ToString("yyyy-MM-dd HH:mm:ss.fffff") +"\t"+ (timerCount++).ToString());
 			// gain lock to check whether the previous data has been saved
 			lock(__doneLocker)
 			{
@@ -194,6 +200,23 @@ namespace CoDASync
 				lock(__doneLocker) done = true;
 				
 				__bufferReadyCountdown.Reset();
+			}
+		}
+		
+		protected void SaveToString()
+		{
+			int count = 0;
+			while(true)
+			{
+				__bufferReadyCountdown.Wait();
+				
+				output += time + " Position: " + position + " Channels: " + sample + "\r\n";
+				
+				lock(__doneLocker) done = true;
+				
+				__bufferReadyCountdown.Reset();
+				
+				Console.WriteLine("Saved End:\t" + (DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss.fffff") +"\t"+ (count++).ToString());
 			}
 		}
 
@@ -546,12 +569,15 @@ namespace CoDASync
 					return ;
 				}
 				
+				/*
 				// configure output stream
 				try{
 					outputStream = new StreamWriter(OutputFileTextBox.Text);
 				}catch (Exception e){
 					// handle me
 				}
+				*/
+				output = "";
 				
 				// reset countdown
 				__bufferReadyCountdown.Reset();
@@ -561,7 +587,7 @@ namespace CoDASync
 				
 				readSerialThread = new Thread(ReadSerial);
 				readDAQThread = new Thread(ReadDAQmx);
-				storeDataThread = new Thread(Store);
+				storeDataThread = new Thread(SaveToString);
 
 				readSerialThread.Start();
 				readDAQThread.Start();
@@ -569,7 +595,7 @@ namespace CoDASync
 				
 				// wait a bit to make sure the threads are ready to receive signals
 				Thread.Sleep(500);
-				
+				timerCount = 0;
 				//Configure timer period and start acquisition
 				samplingTimer.Interval = (double)SamplingPeriodBox.Value;
 				samplingTimer.Enabled = true;
@@ -595,7 +621,7 @@ namespace CoDASync
 				}
 				
 				samplingTimer.Enabled = false;
-				
+				Thread.Sleep(1000);
 				// stop threads that are waiting for synchronization
 				readSerialThread.Abort();
 				readDAQThread.Abort();
@@ -605,11 +631,31 @@ namespace CoDASync
 				readDAQThread = null;
 				storeDataThread = null;
 				
+				/*
 				// close output stream
 				try {
 					outputStream.Close();
 					outputStream = null;
 				}catch (Exception e) {
+					// handle me
+				}
+				*/
+				
+				
+				try{
+					Debug.Assert(outputStream == null);
+					outputStream = new StreamWriter(OutputFileTextBox.Text);
+					outputStream.WriteLine(output);
+					outputStream.Close();
+					outputStream = null;
+					
+					MessageBox.Show(
+						"Output written to file", 
+						"DebugMessage",
+						MessageBoxButtons.OK,
+						MessageBoxIcon.Warning
+					);
+				}catch (Exception e){
 					// handle me
 				}
 				
