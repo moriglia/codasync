@@ -268,7 +268,18 @@ namespace CoDASync
 					MessageBoxIcon.Error
 				);
 			}
-			
+			this.updateCorvusConnectionStatus();
+		}
+		
+		protected void updateCorvusConnectionStatus()
+		{
+			if (IsCMSet)
+				if (CM.IsOpen)
+					this.CorvusConnectionLabel.Text = "Open";
+				else
+					this.CorvusConnectionLabel.Text = "Closed (configured)";
+			else
+				this.CorvusConnectionLabel.Text = "Not configured";
 		}
 
         public void sendVenusCommand(String venusCommand)
@@ -286,11 +297,14 @@ namespace CoDASync
 			} 
 			
 			CM.sendCommand(venusCommand);
+			
+			this.updateCorvusConnectionStatus();
         }
 
         private void SendCommandButton_Click(object sender, EventArgs e)
         {
             sendVenusCommand(VenusCommandBox.Text);
+			this.updateCorvusConnectionStatus();
         }
 
 		// relative move section ------------------------------------------------
@@ -347,6 +361,7 @@ namespace CoDASync
 			
 			// send command to platform
 			CM.rmove(x, y, z);
+			this.updateCorvusConnectionStatus();
 		}
 		
 		// ----------------------------------------------------------------------
@@ -374,6 +389,7 @@ namespace CoDASync
 			
 			// send position to Corvus platform
 			CM.setpos(x, y, z);
+			this.updateCorvusConnectionStatus();
 		}
 		// ----------------------------------------------------------------------
 		
@@ -393,6 +409,7 @@ namespace CoDASync
 			}
 			
 			CM.move(0,0,0);
+			this.updateCorvusConnectionStatus();
 		}
 		
 		// Move to position ------------------------------------------------------
@@ -416,7 +433,14 @@ namespace CoDASync
 			float z = (float)this.OriginZ.Value;
 			
 			CM.move(x,y,z);
+			this.updateCorvusConnectionStatus();
 		}
+		
+		
+		//---------------------------------------------------------------------------+
+		// NI DAQ mx section                                                         |
+		//---------------------------------------------------------------------------+
+		
 		
 		// string parser for getting channels to use for DAQmx data acquisition
 		protected int [] parseIntRange(String s)
@@ -482,6 +506,13 @@ namespace CoDASync
 			return tmp.ToArray();
 		}
 		
+		
+		protected void updateDeviceStatusLabel()
+		{
+			if (this.IsDMSet) this.DeviceConfigurationStatusLabel.Text = "Configured";
+			else this.DeviceConfigurationStatusLabel.Text = "Configured";
+		}
+		
 		// get necessary parameters and set the NIDAQmx manager
 		public void ConfigureNIDAQmxButton_Click(object sender, EventArgs ea)
 		{
@@ -491,6 +522,7 @@ namespace CoDASync
 			DM = new DAQManager(device, channels);
 			
 			IsDMSet = true;
+			this.updateDeviceStatusLabel();
 		}
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)
@@ -576,6 +608,7 @@ namespace CoDASync
 				
 				// set mark acquisition as in progress
 				acquisitionInProgress = true;
+				this.SamplingStatusLabel.Text = "Sampling ...";
 			}
 		}
 		
@@ -614,6 +647,7 @@ namespace CoDASync
 				}
 				
 				acquisitionInProgress = false;
+				this.SamplingStatusLabel.Text = "Ready";
 			}
 		}
     }

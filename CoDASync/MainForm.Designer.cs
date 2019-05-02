@@ -38,6 +38,7 @@
             this.PortTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+			this.CorvusConnectionLabel = new System.Windows.Forms.Label();
             this.OriginSettingsBox = new System.Windows.Forms.GroupBox();
             this.MoveToPositionButton = new System.Windows.Forms.Button();
             this.OriginY = new System.Windows.Forms.NumericUpDown();
@@ -69,12 +70,14 @@
             this.ConfigureNIDAQmxButton = new System.Windows.Forms.Button();
             this.ChannelTextBox = new System.Windows.Forms.TextBox();
             this.DeviceNameTextBox = new System.Windows.Forms.TextBox();
+			this.DeviceConfigurationStatusLabel = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.SamplingControlBox = new System.Windows.Forms.GroupBox();
             this.BrowseFileButton = new System.Windows.Forms.Button();
             this.OutputFileTextBox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+			this.SamplingStatusLabel = new System.Windows.Forms.Label();
             this.SamplingPeriodBox = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.StartAcquisitionButton = new System.Windows.Forms.Button();
@@ -149,12 +152,14 @@
             this.CorvusConfigurationBox.Controls.Add(this.PortTextBox);
             this.CorvusConfigurationBox.Controls.Add(this.label8);
             this.CorvusConfigurationBox.Controls.Add(this.label7);
+			this.CorvusConfigurationBox.Controls.Add(this.CorvusConnectionLabel);
             this.CorvusConfigurationBox.Location = new System.Drawing.Point(7, 20);
             this.CorvusConfigurationBox.Name = "CorvusConfigurationBox";
             this.CorvusConfigurationBox.Size = new System.Drawing.Size(324, 73);
             this.CorvusConfigurationBox.TabIndex = 15;
             this.CorvusConfigurationBox.TabStop = false;
             this.CorvusConfigurationBox.Text = "Configure";
+			
             // 
             // ConnectPortButton
             // 
@@ -199,6 +204,15 @@
             this.label7.Size = new System.Drawing.Size(26, 13);
             this.label7.TabIndex = 0;
             this.label7.Text = "Port";
+			// 
+            // CorvusConnectionLabel
+            // 
+            this.CorvusConnectionLabel.AutoSize = true;
+            this.CorvusConnectionLabel.Location = new System.Drawing.Point(228, 19);
+            this.CorvusConnectionLabel.Name = "CorvusConnectionLabel";
+            this.CorvusConnectionLabel.Size = new System.Drawing.Size(60, 13);
+            this.CorvusConnectionLabel.TabIndex = 1;
+            this.CorvusConnectionLabel.Text = "Not Configured";
             // 
             // OriginSettingsBox
             // 
@@ -573,6 +587,7 @@
             this.NIDAQmxConfigurationBox.Controls.Add(this.ChannelTextBox);
             this.NIDAQmxConfigurationBox.Controls.Add(this.DeviceNameTextBox);
             this.NIDAQmxConfigurationBox.Controls.Add(this.label10);
+			this.NIDAQmxConfigurationBox.Controls.Add(this.DeviceConfigurationStatusLabel);
             this.NIDAQmxConfigurationBox.Controls.Add(this.label9);
             this.NIDAQmxConfigurationBox.Location = new System.Drawing.Point(6, 20);
             this.NIDAQmxConfigurationBox.Name = "NIDAQmxConfigurationBox";
@@ -606,6 +621,15 @@
             this.DeviceNameTextBox.Size = new System.Drawing.Size(100, 20);
             this.DeviceNameTextBox.TabIndex = 7;
             this.DeviceNameTextBox.Text = "Dev2";
+			// 
+            // DeviceConfigurationStatusLabel
+            // 
+            this.DeviceConfigurationStatusLabel.AutoSize = true;
+            this.DeviceConfigurationStatusLabel.Location = new System.Drawing.Point(203, 16);
+            this.DeviceConfigurationStatusLabel.Name = "DeviceConfigurationStatusLabel";
+            this.DeviceConfigurationStatusLabel.Size = new System.Drawing.Size(61, 13);
+            //this.DeviceConfigurationStatusLabel.TabIndex = 5;
+            this.DeviceConfigurationStatusLabel.Text = "Not configured";
             // 
             // label10
             // 
@@ -635,6 +659,7 @@
             this.SamplingControlBox.Controls.Add(this.label12);
             this.SamplingControlBox.Controls.Add(this.SamplingPeriodBox);
             this.SamplingControlBox.Controls.Add(this.label11);
+			this.SamplingControlBox.Controls.Add(this.SamplingStatusLabel);
             this.SamplingControlBox.Location = new System.Drawing.Point(683, 12);
             this.SamplingControlBox.Name = "SamplingControlBox";
             this.SamplingControlBox.Size = new System.Drawing.Size(276, 655);
@@ -667,6 +692,15 @@
             this.label12.Size = new System.Drawing.Size(61, 13);
             this.label12.TabIndex = 2;
             this.label12.Text = "Output File:";
+			// 
+            // SamplingStatusLabel
+            // 
+            this.SamplingStatusLabel.AutoSize = true;
+            this.SamplingStatusLabel.Location = new System.Drawing.Point(13, 88);
+            this.SamplingStatusLabel.Name = "SamplingStatusLabel";
+            this.SamplingStatusLabel.Size = new System.Drawing.Size(61, 13);
+            this.SamplingStatusLabel.TabIndex = 2;
+            this.SamplingStatusLabel.Text = "Ready";
             // 
             // SamplingPeriodBox
             // 
@@ -779,7 +813,8 @@
         private System.Windows.Forms.TextBox PortTextBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button ExecListingButton;
+        private System.Windows.Forms.Label CorvusConnectionLabel;
+		private System.Windows.Forms.Button ExecListingButton;
         private System.Windows.Forms.TextBox ListingFilename;
         private System.Windows.Forms.GroupBox NIDAQmxControlBox;
         private System.Windows.Forms.Button MoveToPositionButton;
@@ -787,6 +822,7 @@
         private System.Windows.Forms.Button ConfigureNIDAQmxButton;
         private System.Windows.Forms.TextBox ChannelTextBox;
         private System.Windows.Forms.TextBox DeviceNameTextBox;
+		private System.Windows.Forms.Label DeviceConfigurationStatusLabel;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox CorvusEventDisplay;
@@ -794,6 +830,7 @@
         private System.Windows.Forms.Button BrowseFileButton;
         private System.Windows.Forms.TextBox OutputFileTextBox;
         private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Label SamplingStatusLabel;
         private System.Windows.Forms.NumericUpDown SamplingPeriodBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button StopAcquisitionButton;
