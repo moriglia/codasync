@@ -184,7 +184,19 @@ namespace CoDASync
 				
 				try
 				{
-					outputStream.WriteLine(time + " Position: " + position + " Channels: " + sample + "\r\n");					
+					outputStream.WriteLine(
+						time + 
+						Regex.Replace(
+							Regex.Replace(
+								position,
+								@"[\n\r]*",
+								""
+							)
+							+ " " + sample, 
+							@"\s+(?!$)", 
+							","
+						)
+					);					
 				} catch (Exception e) {
 					// stop all threads
 					Console.WriteLine("Stopping all threads...");
