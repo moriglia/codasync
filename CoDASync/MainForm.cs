@@ -63,6 +63,8 @@ namespace CoDASync
 		// END OF MEMBERS TO HANDLE TIMED ACQUISITION ----------------------------------------- 
 		
 		
+		private delegate void SafeCallDelegate(ref string line);
+		
 		// Constructor
         public CoDASyncWindow()
         {
@@ -105,6 +107,7 @@ namespace CoDASync
 			readSerialThread = null;
 			readDAQThread = null;
 			storeDataThread = null;
+			
         }
 		
 		
@@ -208,6 +211,19 @@ namespace CoDASync
 				__bufferReadyCountdown.Reset();
 			}
 		}
+		
+		public void displayLineToLog(ref string line)
+		{
+			if (this.CorvusEventDisplay.InvokeRequired)
+			{
+				var d = new SafeCallDelegate(displayLineToLog);
+				Invoke(d, new object [] { line });
+			}
+			else
+			{
+				this.CorvusEventDisplay.Text += line;
+			}
+		}
 
 		
 		public void TestPeriodicalAcquisition()
@@ -281,6 +297,8 @@ namespace CoDASync
 				);
 			}
 			this.updateCorvusConnectionStatus();
+			
+			CM.sc = displayLineToLog;
 		}
 		
 		protected void updateCorvusConnectionStatus()

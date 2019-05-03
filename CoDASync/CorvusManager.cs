@@ -11,13 +11,77 @@ namespace CoDASync
     class CorvusManager : SerialPort
     {
 		private Object __portWriteLock; // lock variable for writing on the port
-		private Object __portReadLock;
-
+		private Object __portReadLock;  // lock variable for reading from the port
+		
+		public delegate void stringConsumer(ref String str);
+		
+		public stringConsumer sc
+		{
+			set;
+			protected get;
+		}
+		
         public CorvusManager(string portName, int baudRate) : base(portName, baudRate)
         {
 			__portWriteLock = new Object();
 			__portReadLock = new Object();
+			
+			sc = null;
+			
+			this.DataReceived += new SerialDataReceivedEventHandler(this.dataReceivedHandler);
         }
+		
+		protected void dataReceivedHandler(object sender, SerialDataReceivedEventArgs sdrea)
+		{
+			// if no consumer is set skip handling
+			if (sc == null)
+				return;
+			
+			String s;
+			lock(__portReadLock)
+			{
+				/* we get in here only in the following cases:
+				
+				1 - No pos() has been called 
+					==> we should consume the data
+				
+				2 - A pos() has released the lock after consuming a line
+					==> we should check whether more data has to be consumed
+					
+				In no case we are receiving the data which were to be delivered
+				to the caller of pos()
+					
+				Let's check whether data is available, we don't have to know 
+				whether we were in case 1 or 2
+				*/
+				
+				// set ReadLine nonblocking
+				this.ReadTimeout = 0;
+				
+				try
+				{
+					// try reading something from port
+					s = this.ReadLine();
+				}
+				catch(TimeoutException te)
+				{
+					// no data to read
+					
+					// reset ReadLine to blocking state
+					this.ReadTimeout = -1;
+					return;
+				} 
+				finally 
+				{					
+					this.ReadTimeout = -1;
+				}
+				
+				// call string consumer that was externally defined
+				sc(ref s);
+			}
+			
+			return ;
+		}
 
         protected void setOpen(){
            if(!IsOpen){
@@ -52,7 +116,10 @@ namespace CoDASync
 			return packedString + command ;
 		}
 		
-		public bool readResponse(ref String s){
+		
+		// not public because it must be called in a critical section
+		// where the __portReadLock has already been acquired
+		protected bool readResponse(ref String s){
 			bool retval = true;
 			
 			// read a line from the port			
