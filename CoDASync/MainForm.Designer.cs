@@ -129,6 +129,7 @@
             this.CorvusEventDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.CorvusEventDisplay.Size = new System.Drawing.Size(325, 183);
             this.CorvusEventDisplay.TabIndex = 18;
+			this.CorvusEventDisplay.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CorvusEventDisplay_KeyDown);
             // 
             // ExecListingButton
             // 

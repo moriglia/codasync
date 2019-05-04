@@ -586,17 +586,28 @@ namespace CoDASync
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)
         {
-            switch ((int)e.KeyCode)
-            {
-				case 13: /* Enter */
-					sendVenusCommand(VenusCommandBox.Text);
-					break;
-				case 4: /* Ctrl-C*/
-					sendVenusCommand(((char)4).ToString());
-					break;
-				default:
-					break;
-            }
+            if(e.Control && e.KeyCode == Keys.C)
+			{
+				sendVenusCommand(((char)4).ToString());
+				return ;
+			}
+			
+			if((int)e.KeyCode == 13)
+			{
+				sendVenusCommand(VenusCommandBox.Text);
+				return ;
+			}
+        }
+		
+		private void CorvusEventDisplay_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Control && e.KeyCode == Keys.C)
+			{
+				sendVenusCommand(((char)4).ToString());
+				return ;
+			}
+			
+			return;
         }
 		
 		private void BrowseListingButton_Click(Object sender, EventArgs ea)
