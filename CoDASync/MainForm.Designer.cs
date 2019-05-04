@@ -826,6 +826,7 @@
             this.EvaluateBiasButton.TabIndex = 3;
             this.EvaluateBiasButton.Text = "BIAS";
             this.EvaluateBiasButton.UseVisualStyleBackColor = true;
+			this.EvaluateBiasButton.Click += new System.EventHandler(this.EvaluateBiasButton_Click);
             // 
             // groupBox1
             // 

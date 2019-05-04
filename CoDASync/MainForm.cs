@@ -636,7 +636,18 @@ namespace CoDASync
 			
 			for (int i = 0; i < 6; ++i)
 				for (int j = 0; j<6; ++j )
-					DM.calibrationMatrix[i,j] = float.Parse(m.Groups[1].Captures[6*i + j].Value);
+					DM.calibrationMatrix[i,j] = double.Parse(m.Groups[1].Captures[6*i + j].Value);
+		}
+		
+		public void EvaluateBiasButton_Click(Object sender, EventArgs ea)
+		{
+			if(!IsDMSet)
+			{
+				MessageBox.Show("No device configured", "Device configuration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+			
+			DM.biasVector = DM.Acquire();
 		}
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)

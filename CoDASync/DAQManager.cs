@@ -30,7 +30,8 @@ namespace CoDASync
 		private AsyncCallback onContinuousDataAcquiredCallback = null;
 		
 		// calibration matrix to extract forces and momentum from voltages
-		public float[,] calibrationMatrix;
+		public double [] biasVector;
+		public double[,] calibrationMatrix;
 		protected int matrixSize;
 		
 		// used to signal that acquisition is completed and data is available to consume
@@ -93,12 +94,13 @@ namespace CoDASync
 			// no data at start
 			data = null;
 			
-			calibrationMatrix = new float[matrixSize, matrixSize];
+			calibrationMatrix = new double[matrixSize, matrixSize];
+			biasVector = new double[matrixSize];
 		}
 		
 		public void InitializeMatrixSize(int size)
 		{
-			calibrationMatrix = new float[size,size];
+			calibrationMatrix = new double[size,size];
 		}
 		
 		protected double[] convertData(double[] voltageVector)
@@ -106,7 +108,7 @@ namespace CoDASync
 			double [] forceVector = new double[matrixSize];
 			for(int i = 0; i < matrixSize; ++i)
 			{
-				forceVector[i] = 0;
+				forceVector[i] = -biasVector[i];
 				for(int j = 0; j<matrixSize; ++j)
 					forceVector[i] += voltageVector[j] * calibrationMatrix[i,j];
 			}
@@ -140,7 +142,7 @@ namespace CoDASync
 			for (int s = 0; s < samplesPerChannel; ++s)
 				for(int i = 0; i < matrixSize; ++i)
 				{
-					forcesVectors[s,i] = 0;
+					forcesVectors[s,i] = -biasVector[i];
 					for(int j = 0; j<matrixSize; ++j)
 						forcesVectors[s, i] += voltageVectors[s, j] * calibrationMatrix[i,j];
 				}
