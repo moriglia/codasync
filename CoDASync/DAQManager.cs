@@ -29,6 +29,9 @@ namespace CoDASync
 		private int sampleNumber;
 		private AsyncCallback onContinuousDataAcquiredCallback = null;
 		
+		// calibration matrix to extract forces and momentum from voltages
+		public float[,] calibrationMatrix;
+		protected int matrixSize;
 		
 		// used to signal that acquisition is completed and data is available to consume
 		private EventWaitHandle dataAvailable;
@@ -43,6 +46,8 @@ namespace CoDASync
 		public DAQManager (String _device, int [] _channels)
 		{
 			acquisitionTask = new Task();
+			
+			matrixSize = _channels.Length;
 			
 			// initialize channels
 			for (int i = 0; i < _channels.Length; ++i)
@@ -87,6 +92,25 @@ namespace CoDASync
 			
 			// no data at start
 			data = null;
+			
+			calibrationMatrix = new float[matrixSize, matrixSize];
+		}
+		
+		public void InitializeMatrixSize(int size)
+		{
+			calibrationMatrix = new float[size,size];
+		}
+		
+		protected double[] convertData(double[] voltageVector)
+		{
+			double [] forceVector = new double[matrixSize];
+			for(int i = 0; i < matrixSize; ++i)
+			{
+				forceVector[i] = 0;
+				for(int j = 0; j<matrixSize; ++j)
+					forceVector[i] += voltageVector[j] * calibrationMatrix[i,j];
+			}
+			return forceVector;
 		}
 		
 		// acquire one sample
@@ -96,7 +120,7 @@ namespace CoDASync
 				return value: array with one value per channel
 			*/
 			// read a sample
-			lock(acquisitionLock) return analogMultiChannelReader.ReadSingleSample();
+			lock(acquisitionLock) return convertData(analogMultiChannelReader.ReadSingleSample());
 			
 		}
 		
@@ -109,7 +133,18 @@ namespace CoDASync
 				return value: a 2D array. The first dimension represents the channel, 
 					the second represents the <samplesPerChannel> values of the selected channel
 			*/
-			lock(acquisitionLock) return analogMultiChannelReader.ReadMultiSample(samplesPerChannel);
+			double[,] forcesVectors = new double[samplesPerChannel,matrixSize];
+			double[,] voltageVectors;
+			lock(acquisitionLock) voltageVectors = analogMultiChannelReader.ReadMultiSample(samplesPerChannel);
+			
+			for (int s = 0; s < samplesPerChannel; ++s)
+				for(int i = 0; i < matrixSize; ++i)
+				{
+					forcesVectors[s,i] = 0;
+					for(int j = 0; j<matrixSize; ++j)
+						forcesVectors[s, i] += voltageVectors[s, j] * calibrationMatrix[i,j];
+				}
+			return forcesVectors;
 		}
 		
 		public void ConfigureContinuousAcquisitionClockRate(double _rate)

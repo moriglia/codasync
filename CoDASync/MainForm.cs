@@ -530,7 +530,7 @@ namespace CoDASync
 				}
 				
 				// insert data into array
-				for ( int i = 0; low <= high; ++low) 
+				for ( /*int i = 0*/; low <= high; ++low) 
 				{
 					tmp.Add(low);
 					++length;
@@ -582,6 +582,61 @@ namespace CoDASync
 			
 			IsDMSet = true;
 			this.updateDeviceStatusLabel();
+		}
+		
+		public void CalibrateUsingMatrixFileButton_Click(Object sender, EventArgs ea)
+		{
+			// check for configuration
+			if (!IsDMSet)
+			{
+				MessageBox.Show(
+					"Configure device first",
+					"Missing configuration",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return;
+			}
+			
+			// select file that contains calibration matrix
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Title = "Select a calibration file";
+			ofd.CheckFileExists = true;
+			if (ofd.ShowDialog() != DialogResult.OK)
+				return;
+			
+			
+			// read the file
+			string fileContent = null;
+			try
+			{
+				fileContent = File.ReadAllText(ofd.FileName);
+			} catch (Exception e)
+			{
+				MessageBox.Show("Something went wrong opening the specified file: " + ofd.FileName, "Wrong path", 
+					MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+			
+			// parse the file
+			Match m = Regex.Match(fileContent, @"calibration\s*:\s*(?:(?:([+-]?\d+(?:\.\d+)?)\s*,?\s*){6}\s*;?\s*){6}");
+			if (!m.Success)
+			{
+				MessageBox.Show(
+					"Unrecognized matrix calibration file format, the calibration file must match this RegEx: " +@"calibration\s*:\s*(?:(?:([+-]?\d+(?:\.\d+)?)\s*,?\s*){6}\s*;?\s*){6}",
+					"Unrecognized format",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return ;
+			}
+			
+			//CM.InitializeMatrixSize(6);
+			
+			
+			for (int i = 0; i < 6; ++i)
+				for (int j = 0; j<6; ++j )
+					DM.calibrationMatrix[i,j] = float.Parse(m.Groups[1].Captures[6*i + j].Value);
 		}
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)

@@ -31,8 +31,8 @@
             this.CorvusControlGroup = new System.Windows.Forms.GroupBox();
             this.CorvusEventDisplay = new System.Windows.Forms.TextBox();
             this.ExecListingButton = new System.Windows.Forms.Button();
+            this.BrowseListingButton = new System.Windows.Forms.Button();
             this.ListingFilename = new System.Windows.Forms.TextBox();
-			this.BrowseListingButton = new System.Windows.Forms.Button();
             this.CorvusConfigurationBox = new System.Windows.Forms.GroupBox();
             this.ConnectPortButton = new System.Windows.Forms.Button();
             this.BaudRateTextBox = new System.Windows.Forms.TextBox();
@@ -83,6 +83,24 @@
             this.SamplingPeriodBox = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.SamplingStatusLabel = new System.Windows.Forms.Label();
+            this.NIDAQmxCalibrationBox = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.CalibrateUsingMatrixFileButton = new System.Windows.Forms.Button();
+            this.EvaluateBiasButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.FxTextBox = new System.Windows.Forms.TextBox();
+            this.FyTextBox = new System.Windows.Forms.TextBox();
+            this.FzTextBox = new System.Windows.Forms.TextBox();
+            this.TxTextBox = new System.Windows.Forms.TextBox();
+            this.TyTextBox = new System.Windows.Forms.TextBox();
+            this.TzTextBox = new System.Windows.Forms.TextBox();
             this.CorvusControlGroup.SuspendLayout();
             this.CorvusConfigurationBox.SuspendLayout();
             this.OriginSettingsBox.SuspendLayout();
@@ -97,6 +115,8 @@
             this.NIDAQmxConfigurationBox.SuspendLayout();
             this.SamplingControlBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SamplingPeriodBox)).BeginInit();
+            this.NIDAQmxCalibrationBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // CorvusControlGroup
@@ -105,7 +125,7 @@
             this.CorvusControlGroup.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CorvusControlGroup.Controls.Add(this.CorvusEventDisplay);
             this.CorvusControlGroup.Controls.Add(this.ExecListingButton);
-			this.CorvusControlGroup.Controls.Add(this.BrowseListingButton);
+            this.CorvusControlGroup.Controls.Add(this.BrowseListingButton);
             this.CorvusControlGroup.Controls.Add(this.ListingFilename);
             this.CorvusControlGroup.Controls.Add(this.CorvusConfigurationBox);
             this.CorvusControlGroup.Controls.Add(this.OriginSettingsBox);
@@ -129,7 +149,7 @@
             this.CorvusEventDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.CorvusEventDisplay.Size = new System.Drawing.Size(325, 183);
             this.CorvusEventDisplay.TabIndex = 18;
-			this.CorvusEventDisplay.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CorvusEventDisplay_KeyDown);
+            this.CorvusEventDisplay.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CorvusEventDisplay_KeyDown);
             // 
             // ExecListingButton
             // 
@@ -139,16 +159,8 @@
             this.ExecListingButton.TabIndex = 16;
             this.ExecListingButton.Text = "Exec Listing";
             this.ExecListingButton.UseVisualStyleBackColor = true;
-			this.ExecListingButton.Click += new System.EventHandler(this.ExecListingButton_Click);
+            this.ExecListingButton.Click += new System.EventHandler(this.ExecListingButton_Click);
             // 
-            // ListingFilename
-            // 
-            this.ListingFilename.Location = new System.Drawing.Point(110, 125);
-            this.ListingFilename.Name = "ListingFilename";
-            this.ListingFilename.Size = new System.Drawing.Size(160, 20);
-            this.ListingFilename.TabIndex = 17;
-            this.ListingFilename.Text = "Almost Implemented :)";
-			// 
             // BrowseListingButton
             // 
             this.BrowseListingButton.Location = new System.Drawing.Point(275, 123);
@@ -157,7 +169,14 @@
             this.BrowseListingButton.TabIndex = 16;
             this.BrowseListingButton.Text = "Browse";
             this.BrowseListingButton.UseVisualStyleBackColor = true;
-			this.BrowseListingButton.Click += new System.EventHandler(this.BrowseListingButton_Click);
+            this.BrowseListingButton.Click += new System.EventHandler(this.BrowseListingButton_Click);
+            // 
+            // ListingFilename
+            // 
+            this.ListingFilename.Location = new System.Drawing.Point(110, 125);
+            this.ListingFilename.Name = "ListingFilename";
+            this.ListingFilename.Size = new System.Drawing.Size(160, 20);
+            this.ListingFilename.TabIndex = 17;
             // 
             // CorvusConfigurationBox
             // 
@@ -586,6 +605,8 @@
             // 
             // NIDAQmxControlBox
             // 
+            this.NIDAQmxControlBox.Controls.Add(this.groupBox1);
+            this.NIDAQmxControlBox.Controls.Add(this.NIDAQmxCalibrationBox);
             this.NIDAQmxControlBox.Controls.Add(this.NIDAQmxConfigurationBox);
             this.NIDAQmxControlBox.Location = new System.Drawing.Point(355, 12);
             this.NIDAQmxControlBox.Name = "NIDAQmxControlBox";
@@ -756,6 +777,179 @@
             this.SamplingStatusLabel.TabIndex = 2;
             this.SamplingStatusLabel.Text = "Ready";
             // 
+            // NIDAQmxCalibrationBox
+            // 
+            this.NIDAQmxCalibrationBox.Controls.Add(this.EvaluateBiasButton);
+            this.NIDAQmxCalibrationBox.Controls.Add(this.CalibrateUsingMatrixFileButton);
+            this.NIDAQmxCalibrationBox.Controls.Add(this.label14);
+            this.NIDAQmxCalibrationBox.Controls.Add(this.label13);
+            this.NIDAQmxCalibrationBox.Location = new System.Drawing.Point(6, 97);
+            this.NIDAQmxCalibrationBox.Name = "NIDAQmxCalibrationBox";
+            this.NIDAQmxCalibrationBox.Size = new System.Drawing.Size(310, 94);
+            this.NIDAQmxCalibrationBox.TabIndex = 1;
+            this.NIDAQmxCalibrationBox.TabStop = false;
+            this.NIDAQmxCalibrationBox.Text = "Calibrate";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(14, 34);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(122, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Calibrate using matrix file";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 71);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(45, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Set bias";
+            // 
+            // CalibrateUsingMatrixFileButton
+            // 
+            this.CalibrateUsingMatrixFileButton.Location = new System.Drawing.Point(203, 28);
+            this.CalibrateUsingMatrixFileButton.Name = "CalibrateUsingMatrixFileButton";
+            this.CalibrateUsingMatrixFileButton.Size = new System.Drawing.Size(75, 23);
+            this.CalibrateUsingMatrixFileButton.TabIndex = 2;
+            this.CalibrateUsingMatrixFileButton.Text = "Calibrate";
+            this.CalibrateUsingMatrixFileButton.UseVisualStyleBackColor = true;
+			this.CalibrateUsingMatrixFileButton.Click += new System.EventHandler(this.CalibrateUsingMatrixFileButton_Click);
+            // 
+            // EvaluateBiasButton
+            // 
+            this.EvaluateBiasButton.Location = new System.Drawing.Point(203, 65);
+            this.EvaluateBiasButton.Name = "EvaluateBiasButton";
+            this.EvaluateBiasButton.Size = new System.Drawing.Size(75, 23);
+            this.EvaluateBiasButton.TabIndex = 3;
+            this.EvaluateBiasButton.Text = "BIAS";
+            this.EvaluateBiasButton.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.TzTextBox);
+            this.groupBox1.Controls.Add(this.TyTextBox);
+            this.groupBox1.Controls.Add(this.TxTextBox);
+            this.groupBox1.Controls.Add(this.FzTextBox);
+            this.groupBox1.Controls.Add(this.FyTextBox);
+            this.groupBox1.Controls.Add(this.FxTextBox);
+            this.groupBox1.Controls.Add(this.label18);
+            this.groupBox1.Controls.Add(this.label19);
+            this.groupBox1.Controls.Add(this.label20);
+            this.groupBox1.Controls.Add(this.label17);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Location = new System.Drawing.Point(6, 197);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(310, 184);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Values";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(25, 26);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(18, 13);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "Fx";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(25, 52);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(18, 13);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "Fy";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(25, 78);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(18, 13);
+            this.label17.TabIndex = 2;
+            this.label17.Text = "Fz";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(24, 156);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(19, 13);
+            this.label18.TabIndex = 5;
+            this.label18.Text = "Tz";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(24, 130);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(19, 13);
+            this.label19.TabIndex = 4;
+            this.label19.Text = "Ty";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(24, 104);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(19, 13);
+            this.label20.TabIndex = 3;
+            this.label20.Text = "Tx";
+            // 
+            // FxTextBox
+            // 
+            this.FxTextBox.Location = new System.Drawing.Point(75, 23);
+            this.FxTextBox.Name = "FxTextBox";
+            this.FxTextBox.ReadOnly = true;
+            this.FxTextBox.Size = new System.Drawing.Size(100, 20);
+            this.FxTextBox.TabIndex = 6;
+            // 
+            // FyTextBox
+            // 
+            this.FyTextBox.Location = new System.Drawing.Point(75, 49);
+            this.FyTextBox.Name = "FyTextBox";
+            this.FyTextBox.ReadOnly = true;
+            this.FyTextBox.Size = new System.Drawing.Size(100, 20);
+            this.FyTextBox.TabIndex = 7;
+            // 
+            // FzTextBox
+            // 
+            this.FzTextBox.Location = new System.Drawing.Point(75, 75);
+            this.FzTextBox.Name = "FzTextBox";
+            this.FzTextBox.ReadOnly = true;
+            this.FzTextBox.Size = new System.Drawing.Size(100, 20);
+            this.FzTextBox.TabIndex = 8;
+            // 
+            // TxTextBox
+            // 
+            this.TxTextBox.Location = new System.Drawing.Point(75, 101);
+            this.TxTextBox.Name = "TxTextBox";
+            this.TxTextBox.ReadOnly = true;
+            this.TxTextBox.Size = new System.Drawing.Size(100, 20);
+            this.TxTextBox.TabIndex = 9;
+            // 
+            // TyTextBox
+            // 
+            this.TyTextBox.Location = new System.Drawing.Point(75, 127);
+            this.TyTextBox.Name = "TyTextBox";
+            this.TyTextBox.ReadOnly = true;
+            this.TyTextBox.Size = new System.Drawing.Size(100, 20);
+            this.TyTextBox.TabIndex = 10;
+            // 
+            // TzTextBox
+            // 
+            this.TzTextBox.Location = new System.Drawing.Point(75, 153);
+            this.TzTextBox.Name = "TzTextBox";
+            this.TzTextBox.ReadOnly = true;
+            this.TzTextBox.Size = new System.Drawing.Size(100, 20);
+            this.TzTextBox.TabIndex = 11;
+            // 
             // CoDASyncWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -786,6 +980,10 @@
             this.SamplingControlBox.ResumeLayout(false);
             this.SamplingControlBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SamplingPeriodBox)).EndInit();
+            this.NIDAQmxCalibrationBox.ResumeLayout(false);
+            this.NIDAQmxCalibrationBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -848,5 +1046,23 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button StopAcquisitionButton;
         private System.Windows.Forms.Button StartAcquisitionButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox TzTextBox;
+        private System.Windows.Forms.TextBox TyTextBox;
+        private System.Windows.Forms.TextBox TxTextBox;
+        private System.Windows.Forms.TextBox FzTextBox;
+        private System.Windows.Forms.TextBox FyTextBox;
+        private System.Windows.Forms.TextBox FxTextBox;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.GroupBox NIDAQmxCalibrationBox;
+        private System.Windows.Forms.Button EvaluateBiasButton;
+        private System.Windows.Forms.Button CalibrateUsingMatrixFileButton;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
     }
 }
