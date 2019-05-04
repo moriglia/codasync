@@ -32,13 +32,14 @@
             this.CorvusEventDisplay = new System.Windows.Forms.TextBox();
             this.ExecListingButton = new System.Windows.Forms.Button();
             this.ListingFilename = new System.Windows.Forms.TextBox();
+			this.BrowseListingButton = new System.Windows.Forms.Button();
             this.CorvusConfigurationBox = new System.Windows.Forms.GroupBox();
             this.ConnectPortButton = new System.Windows.Forms.Button();
             this.BaudRateTextBox = new System.Windows.Forms.TextBox();
             this.PortTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-			this.CorvusConnectionLabel = new System.Windows.Forms.Label();
+            this.CorvusConnectionLabel = new System.Windows.Forms.Label();
             this.OriginSettingsBox = new System.Windows.Forms.GroupBox();
             this.MoveToPositionButton = new System.Windows.Forms.Button();
             this.OriginY = new System.Windows.Forms.NumericUpDown();
@@ -70,18 +71,18 @@
             this.ConfigureNIDAQmxButton = new System.Windows.Forms.Button();
             this.ChannelTextBox = new System.Windows.Forms.TextBox();
             this.DeviceNameTextBox = new System.Windows.Forms.TextBox();
-			this.DeviceConfigurationStatusLabel = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.DeviceConfigurationStatusLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.SamplingControlBox = new System.Windows.Forms.GroupBox();
+            this.StopAcquisitionButton = new System.Windows.Forms.Button();
+            this.StartAcquisitionButton = new System.Windows.Forms.Button();
             this.BrowseFileButton = new System.Windows.Forms.Button();
             this.OutputFileTextBox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-			this.SamplingStatusLabel = new System.Windows.Forms.Label();
             this.SamplingPeriodBox = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
-            this.StartAcquisitionButton = new System.Windows.Forms.Button();
-            this.StopAcquisitionButton = new System.Windows.Forms.Button();
+            this.SamplingStatusLabel = new System.Windows.Forms.Label();
             this.CorvusControlGroup.SuspendLayout();
             this.CorvusConfigurationBox.SuspendLayout();
             this.OriginSettingsBox.SuspendLayout();
@@ -104,6 +105,7 @@
             this.CorvusControlGroup.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CorvusControlGroup.Controls.Add(this.CorvusEventDisplay);
             this.CorvusControlGroup.Controls.Add(this.ExecListingButton);
+			this.CorvusControlGroup.Controls.Add(this.BrowseListingButton);
             this.CorvusControlGroup.Controls.Add(this.ListingFilename);
             this.CorvusControlGroup.Controls.Add(this.CorvusConfigurationBox);
             this.CorvusControlGroup.Controls.Add(this.OriginSettingsBox);
@@ -136,14 +138,25 @@
             this.ExecListingButton.TabIndex = 16;
             this.ExecListingButton.Text = "Exec Listing";
             this.ExecListingButton.UseVisualStyleBackColor = true;
+			this.ExecListingButton.Click += new System.EventHandler(this.ExecListingButton_Click);
             // 
             // ListingFilename
             // 
             this.ListingFilename.Location = new System.Drawing.Point(110, 125);
             this.ListingFilename.Name = "ListingFilename";
-            this.ListingFilename.Size = new System.Drawing.Size(221, 20);
+            this.ListingFilename.Size = new System.Drawing.Size(160, 20);
             this.ListingFilename.TabIndex = 17;
-            this.ListingFilename.Text = "Not implemented (yet)";
+            this.ListingFilename.Text = "Almost Implemented :)";
+			// 
+            // BrowseListingButton
+            // 
+            this.BrowseListingButton.Location = new System.Drawing.Point(275, 123);
+            this.BrowseListingButton.Name = "BrowseListingButton";
+            this.BrowseListingButton.Size = new System.Drawing.Size(56, 23);
+            this.BrowseListingButton.TabIndex = 16;
+            this.BrowseListingButton.Text = "Browse";
+            this.BrowseListingButton.UseVisualStyleBackColor = true;
+			this.BrowseListingButton.Click += new System.EventHandler(this.BrowseListingButton_Click);
             // 
             // CorvusConfigurationBox
             // 
@@ -152,14 +165,13 @@
             this.CorvusConfigurationBox.Controls.Add(this.PortTextBox);
             this.CorvusConfigurationBox.Controls.Add(this.label8);
             this.CorvusConfigurationBox.Controls.Add(this.label7);
-			this.CorvusConfigurationBox.Controls.Add(this.CorvusConnectionLabel);
+            this.CorvusConfigurationBox.Controls.Add(this.CorvusConnectionLabel);
             this.CorvusConfigurationBox.Location = new System.Drawing.Point(7, 20);
             this.CorvusConfigurationBox.Name = "CorvusConfigurationBox";
             this.CorvusConfigurationBox.Size = new System.Drawing.Size(324, 73);
             this.CorvusConfigurationBox.TabIndex = 15;
             this.CorvusConfigurationBox.TabStop = false;
             this.CorvusConfigurationBox.Text = "Configure";
-			
             // 
             // ConnectPortButton
             // 
@@ -204,13 +216,13 @@
             this.label7.Size = new System.Drawing.Size(26, 13);
             this.label7.TabIndex = 0;
             this.label7.Text = "Port";
-			// 
+            // 
             // CorvusConnectionLabel
             // 
             this.CorvusConnectionLabel.AutoSize = true;
             this.CorvusConnectionLabel.Location = new System.Drawing.Point(228, 19);
             this.CorvusConnectionLabel.Name = "CorvusConnectionLabel";
-            this.CorvusConnectionLabel.Size = new System.Drawing.Size(60, 13);
+            this.CorvusConnectionLabel.Size = new System.Drawing.Size(78, 13);
             this.CorvusConnectionLabel.TabIndex = 1;
             this.CorvusConnectionLabel.Text = "Not Configured";
             // 
@@ -587,7 +599,7 @@
             this.NIDAQmxConfigurationBox.Controls.Add(this.ChannelTextBox);
             this.NIDAQmxConfigurationBox.Controls.Add(this.DeviceNameTextBox);
             this.NIDAQmxConfigurationBox.Controls.Add(this.label10);
-			this.NIDAQmxConfigurationBox.Controls.Add(this.DeviceConfigurationStatusLabel);
+            this.NIDAQmxConfigurationBox.Controls.Add(this.DeviceConfigurationStatusLabel);
             this.NIDAQmxConfigurationBox.Controls.Add(this.label9);
             this.NIDAQmxConfigurationBox.Location = new System.Drawing.Point(6, 20);
             this.NIDAQmxConfigurationBox.Name = "NIDAQmxConfigurationBox";
@@ -621,15 +633,6 @@
             this.DeviceNameTextBox.Size = new System.Drawing.Size(100, 20);
             this.DeviceNameTextBox.TabIndex = 7;
             this.DeviceNameTextBox.Text = "Dev2";
-			// 
-            // DeviceConfigurationStatusLabel
-            // 
-            this.DeviceConfigurationStatusLabel.AutoSize = true;
-            this.DeviceConfigurationStatusLabel.Location = new System.Drawing.Point(203, 16);
-            this.DeviceConfigurationStatusLabel.Name = "DeviceConfigurationStatusLabel";
-            this.DeviceConfigurationStatusLabel.Size = new System.Drawing.Size(61, 13);
-            //this.DeviceConfigurationStatusLabel.TabIndex = 5;
-            this.DeviceConfigurationStatusLabel.Text = "Not configured";
             // 
             // label10
             // 
@@ -639,6 +642,15 @@
             this.label10.Size = new System.Drawing.Size(41, 13);
             this.label10.TabIndex = 5;
             this.label10.Text = "Device";
+            // 
+            // DeviceConfigurationStatusLabel
+            // 
+            this.DeviceConfigurationStatusLabel.AutoSize = true;
+            this.DeviceConfigurationStatusLabel.Location = new System.Drawing.Point(203, 16);
+            this.DeviceConfigurationStatusLabel.Name = "DeviceConfigurationStatusLabel";
+            this.DeviceConfigurationStatusLabel.Size = new System.Drawing.Size(77, 13);
+            this.DeviceConfigurationStatusLabel.TabIndex = 10;
+            this.DeviceConfigurationStatusLabel.Text = "Not configured";
             // 
             // label9
             // 
@@ -659,13 +671,33 @@
             this.SamplingControlBox.Controls.Add(this.label12);
             this.SamplingControlBox.Controls.Add(this.SamplingPeriodBox);
             this.SamplingControlBox.Controls.Add(this.label11);
-			this.SamplingControlBox.Controls.Add(this.SamplingStatusLabel);
+            this.SamplingControlBox.Controls.Add(this.SamplingStatusLabel);
             this.SamplingControlBox.Location = new System.Drawing.Point(683, 12);
             this.SamplingControlBox.Name = "SamplingControlBox";
             this.SamplingControlBox.Size = new System.Drawing.Size(276, 655);
             this.SamplingControlBox.TabIndex = 2;
             this.SamplingControlBox.TabStop = false;
             this.SamplingControlBox.Text = "Sampling Control";
+            // 
+            // StopAcquisitionButton
+            // 
+            this.StopAcquisitionButton.Location = new System.Drawing.Point(195, 122);
+            this.StopAcquisitionButton.Name = "StopAcquisitionButton";
+            this.StopAcquisitionButton.Size = new System.Drawing.Size(75, 23);
+            this.StopAcquisitionButton.TabIndex = 6;
+            this.StopAcquisitionButton.Text = "Stop";
+            this.StopAcquisitionButton.UseVisualStyleBackColor = true;
+            this.StopAcquisitionButton.Click += new System.EventHandler(this.StopAcquisitionButton_Click);
+            // 
+            // StartAcquisitionButton
+            // 
+            this.StartAcquisitionButton.Location = new System.Drawing.Point(7, 122);
+            this.StartAcquisitionButton.Name = "StartAcquisitionButton";
+            this.StartAcquisitionButton.Size = new System.Drawing.Size(75, 23);
+            this.StartAcquisitionButton.TabIndex = 5;
+            this.StartAcquisitionButton.Text = "Start";
+            this.StartAcquisitionButton.UseVisualStyleBackColor = true;
+            this.StartAcquisitionButton.Click += new System.EventHandler(this.StartAcquisitionButton_Click);
             // 
             // BrowseFileButton
             // 
@@ -692,15 +724,6 @@
             this.label12.Size = new System.Drawing.Size(61, 13);
             this.label12.TabIndex = 2;
             this.label12.Text = "Output File:";
-			// 
-            // SamplingStatusLabel
-            // 
-            this.SamplingStatusLabel.AutoSize = true;
-            this.SamplingStatusLabel.Location = new System.Drawing.Point(13, 88);
-            this.SamplingStatusLabel.Name = "SamplingStatusLabel";
-            this.SamplingStatusLabel.Size = new System.Drawing.Size(61, 13);
-            this.SamplingStatusLabel.TabIndex = 2;
-            this.SamplingStatusLabel.Text = "Ready";
             // 
             // SamplingPeriodBox
             // 
@@ -710,7 +733,6 @@
             -1966660860,
             0,
             0});
-			this.SamplingPeriodBox.Minimum = 0;
             this.SamplingPeriodBox.Name = "SamplingPeriodBox";
             this.SamplingPeriodBox.Size = new System.Drawing.Size(145, 20);
             this.SamplingPeriodBox.TabIndex = 1;
@@ -724,25 +746,14 @@
             this.label11.TabIndex = 0;
             this.label11.Text = "Sampling Period";
             // 
-            // StartAcquisitionButton
+            // SamplingStatusLabel
             // 
-            this.StartAcquisitionButton.Location = new System.Drawing.Point(7, 122);
-            this.StartAcquisitionButton.Name = "StartAcquisitionButton";
-            this.StartAcquisitionButton.Size = new System.Drawing.Size(75, 23);
-            this.StartAcquisitionButton.TabIndex = 5;
-            this.StartAcquisitionButton.Text = "Start";
-            this.StartAcquisitionButton.UseVisualStyleBackColor = true;
-			this.StartAcquisitionButton.Click += new System.EventHandler(this.StartAcquisitionButton_Click);
-            // 
-            // StopAcquisitionButton
-            // 
-            this.StopAcquisitionButton.Location = new System.Drawing.Point(195, 122);
-            this.StopAcquisitionButton.Name = "StopAcquisitionButton";
-            this.StopAcquisitionButton.Size = new System.Drawing.Size(75, 23);
-            this.StopAcquisitionButton.TabIndex = 6;
-            this.StopAcquisitionButton.Text = "Stop";
-            this.StopAcquisitionButton.UseVisualStyleBackColor = true;
-			this.StopAcquisitionButton.Click += new System.EventHandler(this.StopAcquisitionButton_Click);
+            this.SamplingStatusLabel.AutoSize = true;
+            this.SamplingStatusLabel.Location = new System.Drawing.Point(13, 88);
+            this.SamplingStatusLabel.Name = "SamplingStatusLabel";
+            this.SamplingStatusLabel.Size = new System.Drawing.Size(38, 13);
+            this.SamplingStatusLabel.TabIndex = 2;
+            this.SamplingStatusLabel.Text = "Ready";
             // 
             // CoDASyncWindow
             // 
@@ -815,6 +826,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label CorvusConnectionLabel;
 		private System.Windows.Forms.Button ExecListingButton;
+		private System.Windows.Forms.Button BrowseListingButton;
         private System.Windows.Forms.TextBox ListingFilename;
         private System.Windows.Forms.GroupBox NIDAQmxControlBox;
         private System.Windows.Forms.Button MoveToPositionButton;

@@ -28,6 +28,14 @@ namespace CoDASync
 		protected bool done;
 		
 		
+		// LISTING EXECUTION -------------------------------------------
+		// is a listing execution in progress ?
+		protected bool execInProgress;
+		private Thread executionThread;
+		protected object __execThreadLocker; 
+		// END of LISTING EXECUTION ------------------------------------
+		
+		
 		
 		// MEMBERS TO HANDLE TIMED ACQUISITION ------------------------------------------------
 		
@@ -63,7 +71,9 @@ namespace CoDASync
 		// END OF MEMBERS TO HANDLE TIMED ACQUISITION ----------------------------------------- 
 		
 		
-		private delegate void SafeCallDelegate(ref string line);
+		private delegate void SafeDisplayLineToLogDelegate(ref string line);
+		private delegate void SafeUpdateCorvusConnectionStatusDelegate();
+		private delegate void SafeSetText(Control c, String text);
 		
 		// Constructor
         public CoDASyncWindow()
@@ -108,6 +118,10 @@ namespace CoDASync
 			readDAQThread = null;
 			storeDataThread = null;
 			
+			// listing variables
+			execInProgress = false;
+			executionThread = null;
+			__execThreadLocker = new Object();
         }
 		
 		
@@ -216,12 +230,12 @@ namespace CoDASync
 		{
 			if (this.CorvusEventDisplay.InvokeRequired)
 			{
-				var d = new SafeCallDelegate(displayLineToLog);
+				var d = new SafeDisplayLineToLogDelegate(displayLineToLog);
 				Invoke(d, new object [] { line });
 			}
 			else
 			{
-				this.CorvusEventDisplay.Text += line;
+				this.CorvusEventDisplay.Text += line + "\r\n";
 			}
 		}
 
@@ -303,13 +317,28 @@ namespace CoDASync
 		
 		protected void updateCorvusConnectionStatus()
 		{
+			/*if (this.CorvusConnectionLabel.InvokeRequired)
+			{
+				return;
+				var d = new SafeUpdateCorvusConnectionStatusDelegate(updateCorvusConnectionStatus);
+				Invoke(d, null);
+			} else
+				if (IsCMSet)
+					if (CM.IsOpen)
+						this.CorvusConnectionLabel.Text = "Open";
+					else
+						this.CorvusConnectionLabel.Text = "Closed (configured)";
+				else
+					this.CorvusConnectionLabel.Text = "Not configured";
+			*/
 			if (IsCMSet)
 				if (CM.IsOpen)
-					this.CorvusConnectionLabel.Text = "Open";
+					SetText(this.CorvusConnectionLabel,"Open");
 				else
-					this.CorvusConnectionLabel.Text = "Closed (configured)";
+					SetText(this.CorvusConnectionLabel,"Closed (conf'd)");
 			else
-				this.CorvusConnectionLabel.Text = "Not configured";
+				SetText(this.CorvusConnectionLabel, "Not configured");
+			
 		}
 
         public void sendVenusCommand(String venusCommand)
@@ -539,8 +568,8 @@ namespace CoDASync
 		
 		protected void updateDeviceStatusLabel()
 		{
-			if (this.IsDMSet) this.DeviceConfigurationStatusLabel.Text = "Configured";
-			else this.DeviceConfigurationStatusLabel.Text = "Configured";
+			if (this.IsDMSet) SetText(this.DeviceConfigurationStatusLabel, "Configured");
+			else SetText(this.DeviceConfigurationStatusLabel, "Configured");
 		}
 		
 		// get necessary parameters and set the NIDAQmx manager
@@ -557,21 +586,169 @@ namespace CoDASync
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((int)e.KeyCode == 13) // enter key pressed
+            switch ((int)e.KeyCode)
             {
-                sendVenusCommand(VenusCommandBox.Text);
+				case 13: /* Enter */
+					sendVenusCommand(VenusCommandBox.Text);
+					break;
+				case 4: /* Ctrl-C*/
+					sendVenusCommand(((char)4).ToString());
+					break;
+				default:
+					break;
             }
         }
 		
-		private void BrowseFileButton_Click(Object senderk, EventArgs ea)
+		private void BrowseListingButton_Click(Object sender, EventArgs ea)
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Title = "Select a listing file";
+			//ofd.Filter = "Text Files (*.txt)|All Files(*.*)";
+			ofd.CheckFileExists = true;
+			if (ofd.ShowDialog() == DialogResult.OK)
+				SetText(ListingFilename, ofd.FileName);
+		}
+		
+		private void ExecListingButtonWorker()
+		{
+			lock (__execThreadLocker) 
+			{
+				if (execInProgress)
+				{	// abort execution
+					if (executionThread.IsAlive)
+						executionThread.Abort();
+					executionThread = null;
+					SetText(ExecListingButton, "Exec Listing");
+					execInProgress = false;
+					return ;
+				}
+
+				// start execution
+				executionThread = new Thread(parseListing);
+				executionThread.Start();
+				SetText(ExecListingButton,"Abort Listing");
+				execInProgress = true;
+			}
+					
+			try
+			{
+				executionThread.Join();
+			} catch (Exception e ) {
+				// nothing to do
+				// just to catch ThreadInterruptedException
+			}
+
+			lock (__execThreadLocker) {
+				SetText(ExecListingButton, "Exec Listing");
+				execInProgress = false;
+				executionThread = null;
+			}
+		}
+		
+		private void ExecListingButton_Click(Object sender, EventArgs ea)
+		{
+			(new Thread(ExecListingButtonWorker)).Start();
+			
+			return;
+		}
+		
+		private void parseListing()
+		{
+			/*StreamReader listingFile;
+			try
+			{	// open file if it exists
+				listingFile = new StreamReader(ListingFilename.Text);
+			} catch (Exception e)
+			{	// problems in opening the file
+				MessageBox.Show(
+					"The specified filename is not valid: " + ListingFilename.Text,
+					"File not found",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				
+				// our job is completed
+				return;
+			}*/
+			
+			// read line by line
+			string[] lines =  null;
+			try
+			{
+				lines = File.ReadAllLines(ListingFilename.Text);
+			}catch(Exception e)
+			{
+				MessageBox.Show(
+					"The specified filename is not valid: " + ListingFilename.Text,
+					"File not found",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				return ;
+			}
+			
+			foreach(string line in lines)
+			{
+				parseListingLine(line);
+			}
+			
+			// clean up stream
+			//listingFile.Close();
+			
+			return;
+		}
+		
+		protected void parseListingLine(String line)
+		{
+			/* 	look for sleep directives:
+				Matches this format: 
+					"<compulsory spacing>.sleep<mandatory space + more compulsory spacing><one non-zero digit><more compulsory digits><compulsory spacing>"
+				The following will match
+					".sl 500 "
+					".sleep     500  "
+					"    .sl   500"
+				The following will not match:
+					".sle 500"
+					".sleep 500 other stuff"
+					" nasty stuff .sl 500"
+			*/
+			Match m = Regex.Match(line, @"^\s*\.sl(?:eep)?\s+([1-9]\d*)\s*$");
+			if (m.Success)
+			{	// a match is found
+				Thread.Sleep(int.Parse(m.Groups[1].Value));
+				return;
+			}
+			
+			// if the line is not a sleep directive, it may be a venus command
+			sendVenusCommand(line);
+			
+			return;
+		}
+		
+		private void BrowseFileButton_Click(Object sender, EventArgs ea)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Title = "Select an output file";
 			ofd.Filter = "Text Files (*.txt)|All Files(*.*)";
 			ofd.CheckFileExists = false;
 			if (ofd.ShowDialog() == DialogResult.OK)
-				OutputFileTextBox.Text = ofd.FileName;
+				SetText(OutputFileTextBox, ofd.FileName);
 		}
+		
+		
+		
+		
+		protected void SetText(Control c, String text)
+		{
+			if (c.InvokeRequired)
+			{
+				var d = new SafeSetText(SetText);
+				Invoke(d, new object[] {c, text});
+			} else 
+				c.Text = text;
+		}
+		
+		
 		
 		private void StartAcquisitionButton_Click(Object sender, EventArgs ea)
 		{
@@ -638,7 +815,7 @@ namespace CoDASync
 				
 				// set mark acquisition as in progress
 				acquisitionInProgress = true;
-				this.SamplingStatusLabel.Text = "Sampling ...";
+				SetText(this.SamplingStatusLabel, "Sampling ...");
 			}
 		}
 		
@@ -677,7 +854,7 @@ namespace CoDASync
 				}
 				
 				acquisitionInProgress = false;
-				this.SamplingStatusLabel.Text = "Ready";
+				SetText(this.SamplingStatusLabel,"Ready");
 			}
 		}
     }
