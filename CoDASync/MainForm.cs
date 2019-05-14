@@ -51,6 +51,7 @@ namespace CoDASync
 		// buffers for acquiring data
 		protected String position;
 		protected String sample;
+		protected String [] sample_array;
 		protected String time;
 		
 		private String output;
@@ -98,6 +99,7 @@ namespace CoDASync
 			
 			position = null;
 			sample = null;
+			sample_array = null;
 			time = null;
 			output = "";
 			
@@ -182,9 +184,11 @@ namespace CoDASync
 				sam = DM.Acquire();
 				
 				sample = "";
-				foreach(double d in sam)
+				sample_array = new String[sam.Length];
+				for(int i = 0; i<sam.Length; ++i)
 				{
-					sample += d.ToString() + " ";
+					sample += sam[i].ToString() + " ";
+					sample_array[i] = sam[i].ToString();
 				}
 				
 				__bufferReadyCountdown.Signal();
@@ -219,10 +223,11 @@ namespace CoDASync
 					Console.WriteLine("Stopping all threads...");
 				}
 				
-				
-				lock(__doneLocker) done = true;
+				displayForce();
 				
 				__bufferReadyCountdown.Reset();
+				
+				lock(__doneLocker) done = true;
 			}
 		}
 		
@@ -236,6 +241,45 @@ namespace CoDASync
 			else
 			{
 				this.CorvusEventDisplay.Text += line + "\r\n";
+			}
+		}
+		
+		protected void displayForce()
+		{
+			/*	this function is unsafe, must be called in a safe context:
+				since it reads the variable @sample_array, which is shared between multiple threads
+				the caller must call displayForce() in mutual exclusion with the threads that 
+				use @sample_array
+			*/
+
+			switch(sample_array.Length)
+			{
+				/*
+					Why all those "goto case <next>"? Blame C# creators...
+					https://stackoverflow.com/questions/6696692/control-cannot-fall-through-from-one-case-label
+				*/
+				default:
+					goto case 6;
+				case 6:
+					SetText(this.TzTextBox, sample_array[5]);
+					goto case 5;
+				case 5:
+					SetText(this.TyTextBox, sample_array[4]);
+					goto case 4;
+				case 4:
+					SetText(this.TxTextBox, sample_array[3]);
+					goto case 3;
+				case 3:
+					SetText(this.FzTextBox, sample_array[2]);
+					goto case 2;
+				case 2:
+					SetText(this.FyTextBox, sample_array[1]);
+					goto case 1;
+				case 1:
+					SetText(this.FxTextBox, sample_array[0]);
+					break;
+				case 0:
+					break;
 			}
 		}
 
@@ -647,7 +691,7 @@ namespace CoDASync
 				return;
 			}
 			
-			DM.biasVector = DM.Acquire();
+			DM.SetBias();
 		}
         
 		private void VenusCommandBox_KeyDown(object sender, KeyEventArgs e)

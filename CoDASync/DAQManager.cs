@@ -10,7 +10,7 @@ using System.IO;
 
 namespace CoDASync
 {
-    class DAQManager
+	class DAQManager
     {
         private Task acquisitionTask; // N. I. Task. It uses analogMultiChannelReader to get data from control board of the load cell.
         private AnalogMultiChannelReader analogMultiChannelReader;
@@ -31,6 +31,7 @@ namespace CoDASync
 		
 		// calibration matrix to extract forces and momentum from voltages
 		public double [] biasVector;
+		protected bool IsBiasSet;
 		public double[,] calibrationMatrix;
 		protected int matrixSize;
 		
@@ -96,6 +97,7 @@ namespace CoDASync
 			
 			calibrationMatrix = new double[matrixSize, matrixSize];
 			biasVector = new double[matrixSize];
+			IsBiasSet = false;
 		}
 		
 		public void InitializeMatrixSize(int size)
@@ -103,16 +105,26 @@ namespace CoDASync
 			calibrationMatrix = new double[size,size];
 		}
 		
-		protected double[] convertData(double[] voltageVector)
+		protected double[] convertData(double[] voltageVector, bool useBias = true)
 		{
 			double [] forceVector = new double[matrixSize];
 			for(int i = 0; i < matrixSize; ++i)
 			{
-				forceVector[i] = -biasVector[i];
+				if (useBias && IsBiasSet)
+					forceVector[i] = -biasVector[i];
+				else
+					forceVector[i] = 0;
 				for(int j = 0; j<matrixSize; ++j)
 					forceVector[i] += voltageVector[j] * calibrationMatrix[i,j];
 			}
 			return forceVector;
+		}
+		
+		public void SetBias()
+		{
+			this.biasVector = convertData(analogMultiChannelReader.ReadSingleSample(), false);
+			IsBiasSet = true;
+			return;
 		}
 		
 		// acquire one sample
